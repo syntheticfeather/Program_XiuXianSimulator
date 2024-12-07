@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+ï»¿#define _CRT_SECURE_NO_WARNINGS 1
 
 #include<stdio.h>
 #include<easyx.h>
@@ -10,10 +10,10 @@
 
 
 
-//°´Å¥½á¹¹Ìå£¬¼ÇÂ¼°´Å¥ËÄ¸ö½ÇµÄÎ»ÖÃ
+//æŒ‰é’®ç»“æ„ä½“ï¼Œè®°å½•æŒ‰é’®å››ä¸ªè§’çš„ä½ç½®
 struct Button
 {
-	//×ó£¬ÓÒ£¬ÉÏ£¬ÏÂ
+	//å·¦ï¼Œå³ï¼Œä¸Šï¼Œä¸‹
 	int x = 0;
 	int y = 0;
 	int w = 0;
@@ -27,24 +27,24 @@ struct Button
 
 
 
-//debugº¯Êı
+//debugå‡½æ•°
 void DeBug(ExMessage m)
 {
 	setfillcolor(BLACK);
 	solidcircle(m.x, m.y, 5);
-	printf("±»µã»÷ÁË");
+	printf("è¢«ç‚¹å‡»äº†");
 }
 
 
 
 
-//³õÊ¼»¯°´Å¥
+//åˆå§‹åŒ–æŒ‰é’®
 Button* MakeButton(int x, int y, int w, int h,
 	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor)
 {
 	Button(*btn) = (Button*)malloc(sizeof(Button));
 
-	//ÉèÖÃ°´Å¥
+	//è®¾ç½®æŒ‰é’®
 	btn->x = x;
 	btn->y = y;
 	btn->w = w;
@@ -58,29 +58,29 @@ Button* MakeButton(int x, int y, int w, int h,
 	strcpy_s(btn->text, text_length, Text);
 	return btn;
 }
-//»æÖÆ°´Å¥
+//ç»˜åˆ¶æŒ‰é’®
 void DrawButton(Button* bn)
 {
-	//°´Å¥ÉèÖÃ
+	//æŒ‰é’®è®¾ç½®
 	setlinecolor(BLACK);
 	setfillcolor(bn->curcolor);
 	solidroundrect(bn->x, bn->y, bn->x + bn->w, bn->y + bn->h, 25, 25);
-	//ÎÄ×ÖÉèÖÃ
+	//æ–‡å­—è®¾ç½®
 	settextcolor(BLACK);
 	setbkmode(TRANSPARENT);
-	settextstyle(15, 0, "ËÎÌå");
-	//ÎÄ×Ö¾ÓÖĞ
+	settextstyle(15, 0, "å®‹ä½“");
+	//æ–‡å­—å±…ä¸­
 	int textw = textwidth(bn->text);
 	int texth = textheight(bn->text);
 	int xx = bn->x + (bn->w - textw) / 2;
 	int yy = bn->y + (bn->h - texth) / 2;
 	outtextxy(xx, yy, bn->text);
 }
-//debugÊµÀı
+//debugå®ä¾‹
 	//struct Button* bn = MakeButton(500, 200, 300, 100, "play",RGB(255,255,255),RGB(137, 207, 240));
 	//DrawButton(bn);
 
-//ÅĞ¶ÏÊÇ·ñÔÚ°´Å¥ÄÚ²¿
+//åˆ¤æ–­æ˜¯å¦åœ¨æŒ‰é’®å†…éƒ¨
 bool IsInButton(Button* bn, ExMessage m) {
 	if (bn->x< m.x && bn->x + bn->w >m.x && bn->y <m.y && bn->y + bn->h >m.y)
 	{
@@ -113,23 +113,23 @@ bool IsClickButton(Button* bn, ExMessage m) {
 
 int main()
 {
-	//´´½¨Ö÷´°¿Ú
+	//åˆ›å»ºä¸»çª—å£
 	HWND MainCamera = initgraph(1024, 1024);
-	//Ìí¼Ó±³¾°Í¼
+	//æ·»åŠ èƒŒæ™¯å›¾
 	IMAGE img;
 	loadimage(&img, "beijintu.png");
 	putimage(0, 0, &img);
 
 
 
-	//Éú³É°´Å¥
-	//±¾»ú1.5±¶ÂÊ£¬
-	Button* Adventure = MakeButton(512 - 275, 924, 100, 50, "ĞŞÁ¶", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
-	Button* Adventure1 = MakeButton(512 - 125, 924, 100, 50, "×°±¸", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
-	Button* Adventure2 = MakeButton(512 + 25, 924, 100, 50, "ÀúÁ·", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
-	Button* Adventure3 = MakeButton(512 + 175, 924, 100, 50, "ÉÌ³Ç", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
-	Button* Adventure4 = MakeButton(512 - 50, 800, 100, 50, "Í»ÆÆ", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
-	//»æÖÆ°´Å¥
+	//ç”ŸæˆæŒ‰é’®
+	//æœ¬æœº1.5å€ç‡ï¼Œ
+	Button* Adventure = MakeButton(512 - 275, 924, 100, 50, "ä¿®ç‚¼", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
+	Button* Adventure1 = MakeButton(512 - 125, 924, 100, 50, "è£…å¤‡", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
+	Button* Adventure2 = MakeButton(512 + 25, 924, 100, 50, "å†ç»ƒ", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
+	Button* Adventure3 = MakeButton(512 + 175, 924, 100, 50, "å•†åŸ", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
+	Button* Adventure4 = MakeButton(512 - 50, 800, 100, 50, "çªç ´", RGB(137, 207, 240), RGB(255, 255, 255), RGB(30, 144, 255));
+	//ç»˜åˆ¶æŒ‰é’®
 	DrawButton(Adventure);
 	DrawButton(Adventure1);
 	DrawButton(Adventure2);
@@ -138,7 +138,7 @@ int main()
 
 
 
-	//»ñÈ¡Êó±êÏûÏ¢
+	//è·å–é¼ æ ‡æ¶ˆæ¯
 	ExMessage m;
 	BeginBatchDraw();
 	while (1)
@@ -149,9 +149,9 @@ int main()
 		DrawButton(Adventure3);
 		DrawButton(Adventure4);
 		peekmessage(&m, EX_MOUSE);
-		//ÅĞ¶ÏÊÇ·ñÈ¥ĞŞÁ¶
+		//åˆ¤æ–­æ˜¯å¦å»ä¿®ç‚¼
 
-		//ÅĞ¶ÏÊÇ·ñÈ¥ÀúÁ·
+		//åˆ¤æ–­æ˜¯å¦å»å†ç»ƒ
 		if (IsClickButton(Adventure, m))
 		{
 		}
