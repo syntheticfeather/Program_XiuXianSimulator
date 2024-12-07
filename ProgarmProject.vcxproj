@@ -133,6 +133,9 @@
     <ClCompile Include="ShoppingMall\ShoppingMall.cpp" />
     <ClCompile Include="XiuXian\XiuXian.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="BeiBao(1).png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

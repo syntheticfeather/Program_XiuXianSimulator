@@ -15,14 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainScreen.cpp">
+    <ClCompile Include="Adventure\Adventure.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="button.cpp">
+    <ClCompile Include="MainScreen\fuben.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="fuben.cpp">
+    <ClCompile Include="MainScreen\MainScreen.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ShoppingMall\ShoppingMall.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XiuXian\XiuXian.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="BeiBao(1).png">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>
