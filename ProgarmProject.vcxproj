@@ -130,7 +130,7 @@
     <ClCompile Include="button.cpp" />
     <ClCompile Include="fuben.cpp" />
     <ClCompile Include="MainScreen.cpp" />
-    <ClCompile Include="text.cpp" />
+    <ClCompile Include="xiuxing.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
