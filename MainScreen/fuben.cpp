@@ -23,6 +23,10 @@ struct Button
 	char* text;
 };
 
+Button* MakeButton(int x, int y, int w, int h,
+	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor);
+
+bool IsBeginner = true;
 bool Canclick;
 float HP = 1.0;
 float ATK = 1.0;
@@ -51,6 +55,15 @@ const char LvlList[71][20] = {
 	"仙"
 };
 
+Button* XiuXing = MakeButton(128 - 50, 929, 100, 50, "修炼", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* WeaponBagButton = MakeButton(384 - 50, 929, 100, 50, "背包", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* Adventure = MakeButton(640 - 50, 929, 100, 50, "历练", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* ShoppingMall = MakeButton(1024 - 128 - 50, 929, 100, 50, "商城", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
+Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
+Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
+
 //debug函数
 void DeBug(ExMessage m)
 {
@@ -68,9 +81,8 @@ void GetName() {
 	if (Name)
 	{
 		srand((unsigned int)time(NULL));
-		strcpy(Name ,NameList[rand()%20]);
+		strcpy(Name, NameList[rand() % 20]);
 	}
-	printf("%s", Name);
 }
 
 //初始化按钮
@@ -269,9 +281,97 @@ void OpenBag(IMAGE imgBag) {
 }
 
 
+const char BeginText[10][100] = {
+	"红尘三千小世界，修真历练成真仙。欢迎来到修仙模拟器。",
+	"上一世的你在成仙渡劫时不幸被兄弟老婆背叛，阴差阳错回到了18岁那年。",
+	"重活一世你决定不再颓废，誓要夺回曾经属于你的一切。",
+	"点击画面加快修炼。",
+	"经验值满了点击突破案件进行突破",
+	"达到一定修为可以外出历练，探索机遇",
+	"灵石可以在商城中购买装备以及灵丹妙药,或者出售不需要的装备",
+	"在背包界面中可以更换装备.查看已有的丹药",
+	"你的境界和三维属性会显示在左上。",
+	"灵石数量以及修炼时长会显示在右上。",
 
+};
+//新手教程指导
+void Instruction(ExMessage m,IMAGE imgbk) {
+	if (IsBeginner)
+	{
+		setbkmode(TRANSPARENT);
+		settextcolor(BLACK);
+		outtextxy(200, 150, BeginText[0]);
+		for (int i = 1; i < 11;)
+		{
+			peekmessage(&m, EX_MOUSE);
+			if (m.message == WM_LBUTTONDOWN)
+			{
+				peekmessage(&m, EX_MOUSE);
+				if (m.message == WM_LBUTTONUP)
+				{
+					outtextxy(200, 150 + (50 * i), BeginText[i]);
+					if (i < 4 || i == 10)
+					{
+						i++;
+					}
+					//教用户点击
+					else if (i == 3)
+					{
+						i++;
+						DrawButton(XiuXing);
+					}
+					//突破按钮
+					else if (i == 4)
+					{
+						DrawButton(LvlUpButton);
+						i++;
+					}
+					//历练按钮
+					else if (i == 5)
+					{
+						DrawButton(Adventure);
+						i++;
+					}
+					//商城按钮
+					else if (i == 6)
+					{
+						DrawButton(ShoppingMall);
+						i++;
+					}
+					//背包按钮
+					else if (i == 7)
+					{
+						DrawButton(WeaponBagButton);
+						i++;
+					}
+					//左上
+					else if (i == 8)
+					{
+						DrawButton(DataButton);
+						UpdateData(DataButton, HP, ATK, DF, Lvl, Name);
+						i++;
+					}
+					//右上
+					else if (i == 9)
+					{
+						DrawButton(AgeCoinButton);
+						UpdateCoin_Age(AgeCoinButton, Age, Coin);
+						i++;
+					}
 
+				}
+			}
+		}
+		IsBeginner = false;
+		putimage(0, 0, &imgbk);
+	}
+	return;
+}
 
+//点击增加经验
+void Click() {
+
+}
 
 
 
@@ -286,43 +386,24 @@ int main()
 	putimage(0, 0, &imgBK);
 	setfillcolor(RGB(0, 0, 0));
 	fillroundrect(200, 765, 824, 785, 20, 10);
-	
 	//生成随机名字
 	GetName();
-
-
-
-	//生成按钮
-	//本机1.5倍率，
-	Button* Adventure = MakeButton(128 - 50, 929, 100, 50, "修炼", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-	Button* WeaponBagButton = MakeButton(384 - 50, 929, 100, 50, "装备", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-	Button* Adventure2 = MakeButton(640 - 50, 929, 100, 50, "历练", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-	Button* Adventure3 = MakeButton(1024 - 128 - 50, 929, 100, 50, "商城", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-	Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-	Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
-	Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
-	Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
-	//绘制按钮
-	DrawButton(Adventure);
-	DrawButton(WeaponBagButton);
-	DrawButton(Adventure2);
-	DrawButton(Adventure3);
-	DrawButton(LvlUpButton);
-	DrawButton(DataButton);
-	DrawButton(AgeCoinButton);
-
-
 	//获取鼠标消息
 	ExMessage m;
+	peekmessage(&m, EX_MOUSE);
+	Instruction(m,imgBK);
+	//开始
 	BeginBatchDraw();
 	while (1)
 	{
-		DrawButton(Adventure);
+		DrawButton(XiuXing);
 		DrawButton(WeaponBagButton);
-		DrawButton(Adventure2);
-		DrawButton(Adventure3);
+		DrawButton(Adventure);
+		DrawButton(ShoppingMall);
 		DrawButton(LvlUpButton);
 		DrawButton(DataButton);
+		DrawButton(AgeCoinButton);
+
 
 		UpdateExp_Lvl(CurExp, MaxExp);
 		UpdateData(DataButton, HP, ATK, DF, Lvl, Name);
@@ -331,18 +412,23 @@ int main()
 		//判断是否去修炼
 
 		peekmessage(&m, EX_MOUSE);
+		//判断点击增加经验
+		/*if(Click())
+		{
+
+		}*/
 		//判断是否去历练
-		if (IsClickButton(Adventure, m))
+		if (IsClickButton(XiuXing, m))
 		{
 		}
 		if (IsClickButton(WeaponBagButton, m))
 		{
 			OpenBag(imgBag);
 		}
-		if (IsClickButton(Adventure2, m))
+		if (IsClickButton(Adventure, m))
 		{
 		}
-		if (IsClickButton(Adventure3, m))
+		if (IsClickButton(ShoppingMall, m))
 		{
 		}
 		if (IsClickButton(LvlUpButton, m))
