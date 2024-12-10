@@ -27,6 +27,7 @@ struct Button
 
 Button* MakeButton(int x, int y, int w, int h,
 	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor);
+void LvlUpScreen(int);
 
 bool IsBeginner = false;
 float HP = 1.0;
@@ -39,7 +40,7 @@ int MaxExp = 10;
 int Age = 1000;
 int Coin = 4;
 char Name[10];
-char NameList[20][10] = {
+char NameList[20][20] = {
 
 	"鲁墨尘","祈墨珏","苗墨北","祈诺昱","湫静安",
 	"鲁君麟","司寇顾尧","顼淮德","阳子明","太叔离洛",
@@ -70,7 +71,6 @@ Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240)
 Button* CloseButton_Bag = MakeButton(720, 70, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
 Button* IfLvlUpButton = MakeButton(720, 720, 35, 35, "是否突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
 
-IMAGE imgBK;
 
 
 
@@ -392,7 +392,7 @@ void LvlUpScreen(int rate) {
 	IMAGE LvlUpUI;
 	loadimage(&LvlUpUI, "LvlUpUI.png");
 	putimage(512 - LvlUpUI.getwidth() / 2, 650, &LvlUpUI);
-	settextcolor(RGB(0,0,0));
+	settextcolor(RGB(0, 0, 0));
 	settextstyle(15, 0, "宋体");
 	char text[10];
 	sprintf(text, "%d", rate);
@@ -407,10 +407,12 @@ int main()
 {
 	//创建主窗口
 	HWND MainCamera = initgraph(1024, 1024);
-	//添加背景图
-	IMAGE imgBK, imgUI, imgBag;
+	//加载图片
+	IMAGE imgBK, imgBag, LvlUpUI;
 	loadimage(&imgBK, "beijintu.png");
 	loadimage(&imgBag, "BeiBao(1).png");
+	loadimage(&LvlUpUI, "LvlUpUI.png");
+	//添加背景图
 	putimage(0, 0, &imgBK);
 	setfillcolor(RGB(0, 0, 0));
 	fillroundrect(200, 765, 824, 785, 20, 10);
@@ -432,11 +434,11 @@ int main()
 		DrawButton(DataButton);
 		DrawButton(AgeCoinButton);
 
-
 		UpdateExp_Lvl(CurExp, MaxExp);
 		UpdateData(DataButton, HP, ATK, DF, Lvl, Name);
 		CanLvlUp(LvlUpButton, CurExp, MaxExp);
 		UpdateCoin_Age(AgeCoinButton, Age, Coin);
+		LvlUpScreen(rate);
 		//判断是否去修炼
 
 		peekmessage(&m, EX_MOUSE);
@@ -469,21 +471,19 @@ int main()
 		}
 		//突破
 		if (IsClickButton(LvlUpButton, m))
-		{			
-			DrawButton(LvlUpButton2);
-			Sleep(100);
-			LvlUpScreen(rate);
-			LvlUpButton->Canclick == false;
-			LvlUpButton2->Canclick == true;
-		}
-		if (IsClickButton(LvlUpButton2, m))
 		{
-			//突破函数
-			//()
-
-			putimage(0, 0, &imgBK);
-			LvlUpButton2->Canclick == false;
-			LvlUpButton->Canclick == true;
+			//DrawButton(LvlUpButton2);
+			//LvlUpScreen(rate);
+			//LvlUpButton->Canclick == false;
+			//LvlUpButton2->Canclick == true;
+			//if (m.message ==WM_LBUTTONUP &&IsClickButton(LvlUpButton2, m))
+			//{
+			//	//突破函数
+			//	//()
+			//	putimage(0, 0, &imgBK);
+			//	LvlUpButton2->Canclick == false;
+			//	LvlUpButton->Canclick == true;
+			//}
 		}
 
 
