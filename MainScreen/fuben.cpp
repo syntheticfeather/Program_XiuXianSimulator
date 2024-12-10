@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+ï»¿#define _CRT_SECURE_NO_WARNINGS 1
 
 #include<stdio.h>
 #include<easyx.h>
@@ -8,10 +8,10 @@
 #include<time.h>
 
 
-//°´Å¥½á¹¹Ìå£¬¼ÇÂ¼°´Å¥ËÄ¸ö½ÇµÄÎ»ÖÃ
+//æŒ‰é’®ç»“æ„ä½“ï¼Œè®°å½•æŒ‰é’®å››ä¸ªè§’çš„ä½ç½®
 struct Button
 {
-	//×ó£¬ÓÒ£¬ÉÏ£¬ÏÂ
+	//å·¦ï¼Œå³ï¼Œä¸Šï¼Œä¸‹
 	int x = 0;
 	int y = 0;
 	int w = 0;
@@ -21,16 +21,18 @@ struct Button
 	COLORREF outcolor = BLACK;
 	COLORREF ClickColor;
 	char* text;
+	bool Canclick = true;
+
 };
 
 Button* MakeButton(int x, int y, int w, int h,
 	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor);
 
-bool IsBeginner = true;
-bool Canclick;
+bool IsBeginner = false;
 float HP = 1.0;
 float ATK = 1.0;
 float DF = 1.0;
+int rate = 80;
 int Lvl = 0;
 int CurExp = 16;
 int MaxExp = 10;
@@ -39,44 +41,53 @@ int Coin = 4;
 char Name[10];
 char NameList[20][10] = {
 
-	"Â³Ä«³¾","ÆíÄ«çå","ÃçÄ«±±","ÆíÅµêÅ","äĞ¾²°²",
-	"Â³¾ı÷ë","Ë¾¿Ü¹ËÒ¢","çï»´µÂ","Ñô×ÓÃ÷","Ì«ÊåÀëÂå",
-	"ÃçÈ¨Õğ","ÃæÇ§³¾","ÄÏ¹¬×Æ¹â","ëÀÂåÒâ","ÃæĞŞÎÄ",
-	"¾£²ÔºÎ","Ô½ËÉÄÏ","Ô½Ñ×Ú¤","»ªÃ÷Ôó","Ãæ·Çº®",
+	"é²å¢¨å°˜","ç¥ˆå¢¨ç","è‹—å¢¨åŒ—","ç¥ˆè¯ºæ˜±","æ¹«é™å®‰",
+	"é²å›éºŸ","å¸å¯‡é¡¾å°§","é¡¼æ·®å¾·","é˜³å­æ˜","å¤ªå”ç¦»æ´›",
+	"è‹—æƒéœ‡","é¢åƒå°˜","å—å®«ç¼å…‰","è‚œæ´›æ„","é¢ä¿®æ–‡",
+	"è†è‹ä½•","è¶Šæ¾å—","è¶Šç‚å†¥","åæ˜æ³½","é¢éå¯’",
 };
 const char LvlList[71][20] = {
-	"Á·ÆøÆÚÒ»½×","Á·ÆøÆÚ¶ş½×","Á·ÆøÆÚÈı½×","Á·ÆøÆÚËÄ½×","Á·ÆøÆÚÎå½×","Á·ÆøÆÚÁù½×","Á·ÆøÆÚÆß½×","Á·ÆøÆÚ°Ë½×","Á·ÆøÆÚ¾Å½×","Á·ÆøÆÚÔ²Âú",
-	"Öş»ùÆÚÒ»½×","Öş»ùÆÚ¶ş½×","Öş»ùÆÚÈı½×","Öş»ùÆÚËÄ½×","Öş»ùÆÚÎå½×","Öş»ùÆÚÁù½×","Öş»ùÆÚÆß½×","Öş»ùÆÚ°Ë½×","Öş»ùÆÚ¾Å½×","Öş»ùÆÚÔ²Âú",
-	"½ğµ¤ÆÚÒ»½×","½ğµ¤ÆÚ¶ş½×","½ğµ¤ÆÚÈı½×","½ğµ¤ÆÚËÄ½×","½ğµ¤ÆÚÎå½×","½ğµ¤ÆÚÁù½×","½ğµ¤ÆÚÆß½×","½ğµ¤ÆÚ°Ë½×","½ğµ¤ÆÚ¾Å½×","½ğµ¤ÆÚÔ²Âú",
-	"ÔªÓ¤ÆÚÒ»½×","ÔªÓ¤ÆÚ¶ş½×","ÔªÓ¤ÆÚÈı½×","ÔªÓ¤ÆÚËÄ½×","ÔªÓ¤ÆÚÎå½×","ÔªÓ¤ÆÚÁù½×","ÔªÓ¤ÆÚÆß½×","ÔªÓ¤ÆÚ°Ë½×","ÔªÓ¤ÆÚ¾Å½×","ÔªÓ¤ÆÚÔ²Âú",
-	"»¯ÉñÆÚÒ»½×","»¯ÉñÆÚ¶ş½×","»¯ÉñÆÚÈı½×","»¯ÉñÆÚËÄ½×","»¯ÉñÆÚÎå½×","»¯ÉñÆÚÁù½×","»¯ÉñÆÚÆß½×","»¯ÉñÆÚ°Ë½×","»¯ÉñÆÚ¾Å½×","»¯ÉñÆÚÔ²Âú",
-	"ºÏÌåÆÚÒ»½×","ºÏÌåÆÚ¶ş½×","ºÏÌåÆÚÈı½×","ºÏÌåÆÚËÄ½×","ºÏÌåÆÚÎå½×","ºÏÌåÆÚÁù½×","ºÏÌåÆÚÆß½×","ºÏÌåÆÚ°Ë½×","ºÏÌåÆÚ¾Å½×","ºÏÌåÆÚÔ²Âú",
-	"·ÉÉıÆÚÒ»½×","·ÉÉıÆÚ¶ş½×","·ÉÉıÆÚÈı½×","·ÉÉıÆÚËÄ½×","·ÉÉıÆÚÎå½×","·ÉÉıÆÚÁù½×","·ÉÉıÆÚÆß½×","·ÉÉıÆÚ°Ë½×","·ÉÉıÆÚ¾Å½×","·ÉÉıÆÚÔ²Âú",
-	"ÏÉ"
+	"ç»ƒæ°”æœŸä¸€é˜¶","ç»ƒæ°”æœŸäºŒé˜¶","ç»ƒæ°”æœŸä¸‰é˜¶","ç»ƒæ°”æœŸå››é˜¶","ç»ƒæ°”æœŸäº”é˜¶","ç»ƒæ°”æœŸå…­é˜¶","ç»ƒæ°”æœŸä¸ƒé˜¶","ç»ƒæ°”æœŸå…«é˜¶","ç»ƒæ°”æœŸä¹é˜¶","ç»ƒæ°”æœŸåœ†æ»¡",
+	"ç­‘åŸºæœŸä¸€é˜¶","ç­‘åŸºæœŸäºŒé˜¶","ç­‘åŸºæœŸä¸‰é˜¶","ç­‘åŸºæœŸå››é˜¶","ç­‘åŸºæœŸäº”é˜¶","ç­‘åŸºæœŸå…­é˜¶","ç­‘åŸºæœŸä¸ƒé˜¶","ç­‘åŸºæœŸå…«é˜¶","ç­‘åŸºæœŸä¹é˜¶","ç­‘åŸºæœŸåœ†æ»¡",
+	"é‡‘ä¸¹æœŸä¸€é˜¶","é‡‘ä¸¹æœŸäºŒé˜¶","é‡‘ä¸¹æœŸä¸‰é˜¶","é‡‘ä¸¹æœŸå››é˜¶","é‡‘ä¸¹æœŸäº”é˜¶","é‡‘ä¸¹æœŸå…­é˜¶","é‡‘ä¸¹æœŸä¸ƒé˜¶","é‡‘ä¸¹æœŸå…«é˜¶","é‡‘ä¸¹æœŸä¹é˜¶","é‡‘ä¸¹æœŸåœ†æ»¡",
+	"å…ƒå©´æœŸä¸€é˜¶","å…ƒå©´æœŸäºŒé˜¶","å…ƒå©´æœŸä¸‰é˜¶","å…ƒå©´æœŸå››é˜¶","å…ƒå©´æœŸäº”é˜¶","å…ƒå©´æœŸå…­é˜¶","å…ƒå©´æœŸä¸ƒé˜¶","å…ƒå©´æœŸå…«é˜¶","å…ƒå©´æœŸä¹é˜¶","å…ƒå©´æœŸåœ†æ»¡",
+	"åŒ–ç¥æœŸä¸€é˜¶","åŒ–ç¥æœŸäºŒé˜¶","åŒ–ç¥æœŸä¸‰é˜¶","åŒ–ç¥æœŸå››é˜¶","åŒ–ç¥æœŸäº”é˜¶","åŒ–ç¥æœŸå…­é˜¶","åŒ–ç¥æœŸä¸ƒé˜¶","åŒ–ç¥æœŸå…«é˜¶","åŒ–ç¥æœŸä¹é˜¶","åŒ–ç¥æœŸåœ†æ»¡",
+	"åˆä½“æœŸä¸€é˜¶","åˆä½“æœŸäºŒé˜¶","åˆä½“æœŸä¸‰é˜¶","åˆä½“æœŸå››é˜¶","åˆä½“æœŸäº”é˜¶","åˆä½“æœŸå…­é˜¶","åˆä½“æœŸä¸ƒé˜¶","åˆä½“æœŸå…«é˜¶","åˆä½“æœŸä¹é˜¶","åˆä½“æœŸåœ†æ»¡",
+	"é£å‡æœŸä¸€é˜¶","é£å‡æœŸäºŒé˜¶","é£å‡æœŸä¸‰é˜¶","é£å‡æœŸå››é˜¶","é£å‡æœŸäº”é˜¶","é£å‡æœŸå…­é˜¶","é£å‡æœŸä¸ƒé˜¶","é£å‡æœŸå…«é˜¶","é£å‡æœŸä¹é˜¶","é£å‡æœŸåœ†æ»¡",
+	"ä»™"
 };
 
-Button* XiuXing = MakeButton(128 - 50, 929, 100, 50, "ĞŞÁ¶", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* WeaponBagButton = MakeButton(384 - 50, 929, 100, 50, "±³°ü", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* Adventure = MakeButton(640 - 50, 929, 100, 50, "ÀúÁ·", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* ShoppingMall = MakeButton(1024 - 128 - 50, 929, 100, 50, "ÉÌ³Ç", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "Í»ÆÆ", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* XiuXing = MakeButton(128 - 50, 929, 100, 50, "ä¿®ç‚¼", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* WeaponBagButton = MakeButton(384 - 50, 929, 100, 50, "èƒŒåŒ…", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* Adventure = MakeButton(640 - 50, 929, 100, 50, "å†ç»ƒ", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* ShoppingMall = MakeButton(1024 - 128 - 50, 929, 100, 50, "å•†åŸ", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "çªç ´", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* LvlUpButton2 = MakeButton(512 - 50, 700, 100, 50, "ç¡®è®¤çªç ´", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+
 Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
 Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
 Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
+Button* CloseButton_Bag = MakeButton(720, 70, 35, 35, "å…³é—­", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* IfLvlUpButton = MakeButton(720, 720, 35, 35, "æ˜¯å¦çªç ´", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
 
-//debugº¯Êı
+IMAGE imgBK;
+
+
+
+
+//debugå‡½æ•°
 void DeBug(ExMessage m)
 {
 	setfillcolor(BLACK);
 	solidcircle(m.x, m.y, 5);
-	printf("±»µã»÷ÁË");
+	printf("è¢«ç‚¹å‡»äº†");
 }
 
-//debugÊµÀı
+//debugå®ä¾‹
 	//struct Button* bn = MakeButton(500, 200, 300, 100, "play",RGB(255,255,255),RGB(137, 207, 240));
 	//DrawButton(bn);
 
-//³õÊ¼»¯ĞÕÃû
+//åˆå§‹åŒ–å§“å
 void GetName() {
 	if (Name)
 	{
@@ -85,13 +96,12 @@ void GetName() {
 	}
 }
 
-//³õÊ¼»¯°´Å¥
+//åˆå§‹åŒ–æŒ‰é’®
 Button* MakeButton(int x, int y, int w, int h,
 	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor)
 {
 	Button(*btn) = (Button*)malloc(sizeof(Button));
-
-	//ÉèÖÃ°´Å¥
+	//è®¾ç½®æŒ‰é’®
 	btn->x = x;
 	btn->y = y;
 	btn->w = w;
@@ -106,36 +116,36 @@ Button* MakeButton(int x, int y, int w, int h,
 	return btn;
 }
 
-//»æÖÆ°´Å¥
+//ç»˜åˆ¶æŒ‰é’®
 void DrawButton(Button* bn)
 {
-	//°´Å¥ÉèÖÃ
+	//æŒ‰é’®è®¾ç½®
 	setlinecolor(RGB(32, 44, 57));
 	setfillcolor(bn->curcolor);
 	solidroundrect(bn->x, bn->y, bn->x + bn->w, bn->y + bn->h, 25, 25);
-	//ÎÄ×ÖÉèÖÃ
+	//æ–‡å­—è®¾ç½®
 	settextcolor(BLACK);
 	setbkmode(TRANSPARENT);
-	settextstyle(15, 0, "ËÎÌå");
-	//ÎÄ×Ö¾ÓÖĞ
+	settextstyle(15, 0, "å®‹ä½“");
+	//æ–‡å­—å±…ä¸­
 	int textw = textwidth(bn->text);
 	int texth = textheight(bn->text);
 	int xx = bn->x + (bn->w - textw) / 2;
 	int yy = bn->y + (bn->h - texth) / 2;
 	outtextxy(xx, yy, bn->text);
 }
-//Ö¸¶¨ÑÕÉ«»æÖÆ°´Å¥
+//æŒ‡å®šé¢œè‰²ç»˜åˆ¶æŒ‰é’®
 void DrawButton(Button* bn, COLORREF Color)
 {
-	//°´Å¥ÉèÖÃ
+	//æŒ‰é’®è®¾ç½®
 	setlinecolor(RGB(32, 44, 57));
 	setfillcolor(Color);
 	solidroundrect(bn->x, bn->y, bn->x + bn->w, bn->y + bn->h, 25, 25);
-	//ÎÄ×ÖÉèÖÃ
+	//æ–‡å­—è®¾ç½®
 	settextcolor(BLACK);
 	setbkmode(TRANSPARENT);
-	settextstyle(15, 0, "ËÎÌå");
-	//ÎÄ×Ö¾ÓÖĞ
+	settextstyle(15, 0, "å®‹ä½“");
+	//æ–‡å­—å±…ä¸­
 	int textw = textwidth(bn->text);
 	int texth = textheight(bn->text);
 	int xx = bn->x + (bn->w - textw) / 2;
@@ -143,7 +153,7 @@ void DrawButton(Button* bn, COLORREF Color)
 	outtextxy(xx, yy, bn->text);
 }
 
-//ÅĞ¶ÏÊÇ·ñÔÚ°´Å¥ÄÚ²¿£¬Êó±êĞü¸¡ÑÕÉ«±ä»¯
+//åˆ¤æ–­æ˜¯å¦åœ¨æŒ‰é’®å†…éƒ¨ï¼Œé¼ æ ‡æ‚¬æµ®é¢œè‰²å˜åŒ–
 bool IsInButton(Button* bn, ExMessage m) {
 	if (bn->x< m.x && bn->x + bn->w >m.x && bn->y <m.y && bn->y + bn->h >m.y)
 	{
@@ -154,10 +164,14 @@ bool IsInButton(Button* bn, ExMessage m) {
 	return false;
 }
 
-//°´Å¥µã»÷ÅĞ¶Ï£¬µã»÷ÑÕÉ«±ä»¯
+//æŒ‰é’®ç‚¹å‡»åˆ¤æ–­ï¼Œç‚¹å‡»é¢œè‰²å˜åŒ–
 bool IsClickButton(Button* bn, ExMessage m) {
-	if (IsInButton(bn, m) && Canclick == true && m.message == WM_LBUTTONDOWN)
+	if (IsInButton(bn, m) && m.message == WM_LBUTTONDOWN)
 	{
+		if (bn->Canclick == false)
+		{
+			return false;
+		}
 		bn->curcolor = bn->ClickColor;
 		FlushBatchDraw();
 		if (m.message == WM_LBUTTONUP)
@@ -166,32 +180,31 @@ bool IsClickButton(Button* bn, ExMessage m) {
 		}
 		return true;
 	}
-
 	return false;
 }
 
-//Í»ÆÆ°´Å¥ÔÚ¾­Ñé²»×ãÊ±²»ÁÁ
+//çªç ´æŒ‰é’®åœ¨ç»éªŒä¸è¶³æ—¶ä¸äº®
 void CanLvlUp(Button* btn, int CurExp, int MaxExp) {
 	if (CurExp < MaxExp)
 	{
 		DrawButton(btn, RGB(139, 134, 130));
-		Canclick = false;
+		btn->Canclick = false;
 	}
 	else
 	{
-		Canclick = true;
+		btn->Canclick = true;
 		setfillcolor(btn->outcolor);
 		DrawButton(btn);
 	}
 }
 
-//ÊµÏÖÈıÎ¬Êı¾İµÄÏÔÊ¾
+//å®ç°ä¸‰ç»´æ•°æ®çš„æ˜¾ç¤º4
 void UpdateData(Button* btn, float HP, float ATK, float DF, int Lvl, char* Name) {
-	//ÎÄ×ÖÉèÖÃ
+	//æ–‡å­—è®¾ç½®
 	settextcolor(BLACK);
 	setbkmode(TRANSPARENT);
-	settextstyle(15, 0, "ËÎÌå");
-	//ÎÄ×Ö¾ÓÖĞ
+	settextstyle(15, 0, "å®‹ä½“");
+	//æ–‡å­—å±…ä¸­
 	char HPText[10], ATKText[10], DFText[10];
 	sprintf(HPText, "%d", (int)HP);
 	sprintf(ATKText, "%d", (int)ATK);
@@ -204,15 +217,15 @@ void UpdateData(Button* btn, float HP, float ATK, float DF, int Lvl, char* Name)
 
 	outtextxy(btn->x + 15, btn->y + btn->h / 6, Name);
 	outtextxy(btn->x + 15, btn->y + btn->h / 3, LvlList[Lvl]);
-	outtextxy(xx - 25, yy + btn->h / 8, "ÉúÃü:");
+	outtextxy(xx - 25, yy + btn->h / 8, "ç”Ÿå‘½:");
 	outtextxy(xx + 25, yy + btn->h / 8, HPText);
-	outtextxy(xx - 25, yy + btn->h / 4, "¹¥»÷:");
+	outtextxy(xx - 25, yy + btn->h / 4, "æ”»å‡»:");
 	outtextxy(xx + 25, yy + btn->h / 4, ATKText);
-	outtextxy(xx - 25, yy + btn->h / 8 * 3, "·ÀÓù:");
+	outtextxy(xx - 25, yy + btn->h / 8 * 3, "é˜²å¾¡:");
 	outtextxy(xx + 25, yy + btn->h / 8 * 3, DFText);
 }
 
-//ÊµÏÖ½ğ±ÒÒÔ¼°ÄêÁäµÄÏÔÊ¾
+//å®ç°é‡‘å¸ä»¥åŠå¹´é¾„çš„æ˜¾ç¤º
 void UpdateCoin_Age(Button* btn, int Age, int Coin) {
 	char AgeText[10], CoinText[10];
 	sprintf(AgeText, "%d", Age);
@@ -220,60 +233,61 @@ void UpdateCoin_Age(Button* btn, int Age, int Coin) {
 
 	settextcolor(BLACK);
 	setbkmode(TRANSPARENT);
-	settextstyle(15, 0, "ËÎÌå");
+	settextstyle(15, 0, "å®‹ä½“");
 	int textw = textwidth(AgeText);
 	int texth = textheight(AgeText);
 	int xx = btn->x + (btn->w - textw) / 2;
 
-	outtextxy(xx - 30, btn->y + btn->h / 3 - 5, "ĞŞÁ¶:");
+	outtextxy(xx - 30, btn->y + btn->h / 3 - 5, "ä¿®ç‚¼:");
 	outtextxy(xx + 10, btn->y + btn->h / 3 - 5, AgeText);
-	outtextxy(xx + textw + 10, btn->y + btn->h / 3 - 5, "Äê");
+	outtextxy(xx + textw + 10, btn->y + btn->h / 3 - 5, "å¹´");
 
-	outtextxy(xx - 30, btn->y + btn->h / 3 * 2 - 5, "ÁéÊ¯:");
+	outtextxy(xx - 30, btn->y + btn->h / 3 * 2 - 5, "çµçŸ³:");
 	outtextxy(xx + 10, btn->y + btn->h / 3 * 2 - 5, CoinText);
-	outtextxy(xx + textw + 10, btn->y + btn->h / 3 * 2 - 5, "Ã¶");
+	outtextxy(xx + textw + 10, btn->y + btn->h / 3 * 2 - 5, "æš");
 
 
 
 }
 
-//¾­Ñé¼´¾­ÑéÌõµÄÏÔÊ¾
+//ç»éªŒå³ç»éªŒæ¡çš„æ˜¾ç¤º
 void UpdateExp_Lvl(int CurExp, int MaxExp) {
-	//ÎÄ×Ö
+	//æ–‡å­—
 	settextcolor(RGB(0, 191, 255));
-	settextstyle(30, 0, "ËÎÌå");
+	settextstyle(30, 0, "å®‹ä½“");
 	char textCur[10], textMax[10];
 	sprintf(textCur, "%d", CurExp);
 	sprintf(textMax, "%d", MaxExp);
-	outtextxy(512 - textwidth(textCur) / 2 - 100, 800, "¾­ÑéÖµ:");
+	outtextxy(512 - textwidth(textCur) / 2 - 100, 800, "ç»éªŒå€¼:");
 	settextcolor(BLACK);
 	outtextxy(512 - textwidth(textCur) / 2 + 30, 800, textCur);
 	outtextxy(512 - textwidth(textCur) / 2 + 70, 800, "/");
 	outtextxy(512 - textwidth(textCur) / 2 + 110, 800, textMax);
-	//¾­ÑéÌõ
+	//ç»éªŒæ¡
 	setfillcolor(RGB(255, 222, 146));
 	float rate = (CurExp + 0.001) / MaxExp;
 	if (rate > 1)
 	{
-		rate = 1;
+		rate = 1.0;
 	}
 	int right = 200 + (rate * 622);
 	//int right = 512;
 	fillroundrect(202, 767, right, 783, 20, 10);
 }
 
-//±³°ü×°±¸ÏÔÊ¾
+//èƒŒåŒ…è£…å¤‡æ˜¾ç¤º
 void OpenBag(IMAGE imgBag) {
-	//Ö÷Ìå¿ò¼Ü
+	//ä¸»ä½“æ¡†æ¶
 	int h = imgBag.getheight();
 	int w = imgBag.getwidth();
 	putimage(512 - (w / 2), 512 - (h / 2) - 150, &imgBag);
-	//ÎÄ×Ö
-	//1.±êÌâ
+	DrawButton(CloseButton_Bag);
+	//æ–‡å­—
+	//1.æ ‡é¢˜
 	settextcolor(BLACK);
 	setbkmode(TRANSPARENT);
-	settextstyle(40, 0, "ËÎÌå");
-	const char* text = "±³°ü";
+	settextstyle(40, 0, "å®‹ä½“");
+	const char* text = "èƒŒåŒ…";
 	int textw = textwidth(text);
 	int xx = 512 - (textw / 2);
 	outtextxy(xx, 512 - 450, text);
@@ -282,20 +296,20 @@ void OpenBag(IMAGE imgBag) {
 
 
 const char BeginText[10][100] = {
-	"ºì³¾ÈıÇ§Ğ¡ÊÀ½ç£¬ĞŞÕæÀúÁ·³ÉÕæÏÉ¡£»¶Ó­À´µ½ĞŞÏÉÄ£ÄâÆ÷¡£",
-	"ÉÏÒ»ÊÀµÄÄãÔÚ³ÉÏÉ¶É½ÙÊ±²»ĞÒ±»ĞÖµÜÀÏÆÅ±³ÅÑ£¬Òõ²îÑô´í»Øµ½ÁË18ËêÄÇÄê¡£",
-	"ÖØ»îÒ»ÊÀÄã¾ö¶¨²»ÔÙÍÇ·Ï£¬ÊÄÒª¶á»ØÔø¾­ÊôÓÚÄãµÄÒ»ÇĞ¡£",
-	"µã»÷»­Ãæ¼Ó¿ìĞŞÁ¶¡£",
-	"¾­ÑéÖµÂúÁËµã»÷Í»ÆÆ°¸¼ş½øĞĞÍ»ÆÆ",
-	"´ïµ½Ò»¶¨ĞŞÎª¿ÉÒÔÍâ³öÀúÁ·£¬Ì½Ë÷»úÓö",
-	"ÁéÊ¯¿ÉÒÔÔÚÉÌ³ÇÖĞ¹ºÂò×°±¸ÒÔ¼°Áéµ¤ÃîÒ©,»òÕß³öÊÛ²»ĞèÒªµÄ×°±¸",
-	"ÔÚ±³°ü½çÃæÖĞ¿ÉÒÔ¸ü»»×°±¸.²é¿´ÒÑÓĞµÄµ¤Ò©",
-	"ÄãµÄ¾³½çºÍÈıÎ¬ÊôĞÔ»áÏÔÊ¾ÔÚ×óÉÏ¡£",
-	"ÁéÊ¯ÊıÁ¿ÒÔ¼°ĞŞÁ¶Ê±³¤»áÏÔÊ¾ÔÚÓÒÉÏ¡£",
+	"çº¢å°˜ä¸‰åƒå°ä¸–ç•Œï¼Œä¿®çœŸå†ç»ƒæˆçœŸä»™ã€‚æ¬¢è¿æ¥åˆ°ä¿®ä»™æ¨¡æ‹Ÿå™¨ã€‚",
+	"ä¸Šä¸€ä¸–çš„ä½ åœ¨æˆä»™æ¸¡åŠ«æ—¶ä¸å¹¸è¢«å…„å¼Ÿè€å©†èƒŒå›ï¼Œé˜´å·®é˜³é”™å›åˆ°äº†18å²é‚£å¹´ã€‚",
+	"é‡æ´»ä¸€ä¸–ä½ å†³å®šä¸å†é¢“åºŸï¼Œèª“è¦å¤ºå›æ›¾ç»å±äºä½ çš„ä¸€åˆ‡ã€‚",
+	"ç‚¹å‡»ç”»é¢åŠ å¿«ä¿®ç‚¼ã€‚",
+	"ç»éªŒå€¼æ»¡äº†ç‚¹å‡»çªç ´æ¡ˆä»¶è¿›è¡Œçªç ´",
+	"è¾¾åˆ°ä¸€å®šä¿®ä¸ºå¯ä»¥å¤–å‡ºå†ç»ƒï¼Œæ¢ç´¢æœºé‡",
+	"çµçŸ³å¯ä»¥åœ¨å•†åŸä¸­è´­ä¹°è£…å¤‡ä»¥åŠçµä¸¹å¦™è¯,æˆ–è€…å‡ºå”®ä¸éœ€è¦çš„è£…å¤‡",
+	"åœ¨èƒŒåŒ…ç•Œé¢ä¸­å¯ä»¥æ›´æ¢è£…å¤‡.æŸ¥çœ‹å·²æœ‰çš„ä¸¹è¯",
+	"ä½ çš„å¢ƒç•Œå’Œä¸‰ç»´å±æ€§ä¼šæ˜¾ç¤ºåœ¨å·¦ä¸Šã€‚",
+	"çµçŸ³æ•°é‡ä»¥åŠä¿®ç‚¼æ—¶é•¿ä¼šæ˜¾ç¤ºåœ¨å³ä¸Šã€‚",
 
 };
-//ĞÂÊÖ½Ì³ÌÖ¸µ¼
-void Instruction(ExMessage m,IMAGE imgbk) {
+//æ–°æ‰‹æ•™ç¨‹æŒ‡å¯¼
+void Instruction(ExMessage m, IMAGE imgbk) {
 	if (IsBeginner)
 	{
 		setbkmode(TRANSPARENT);
@@ -314,44 +328,44 @@ void Instruction(ExMessage m,IMAGE imgbk) {
 					{
 						i++;
 					}
-					//½ÌÓÃ»§µã»÷
+					//æ•™ç”¨æˆ·ç‚¹å‡»
 					else if (i == 3)
 					{
 						i++;
 						DrawButton(XiuXing);
 					}
-					//Í»ÆÆ°´Å¥
+					//çªç ´æŒ‰é’®
 					else if (i == 4)
 					{
 						DrawButton(LvlUpButton);
 						i++;
 					}
-					//ÀúÁ·°´Å¥
+					//å†ç»ƒæŒ‰é’®
 					else if (i == 5)
 					{
 						DrawButton(Adventure);
 						i++;
 					}
-					//ÉÌ³Ç°´Å¥
+					//å•†åŸæŒ‰é’®
 					else if (i == 6)
 					{
 						DrawButton(ShoppingMall);
 						i++;
 					}
-					//±³°ü°´Å¥
+					//èƒŒåŒ…æŒ‰é’®
 					else if (i == 7)
 					{
 						DrawButton(WeaponBagButton);
 						i++;
 					}
-					//×óÉÏ
+					//å·¦ä¸Š
 					else if (i == 8)
 					{
 						DrawButton(DataButton);
 						UpdateData(DataButton, HP, ATK, DF, Lvl, Name);
 						i++;
 					}
-					//ÓÒÉÏ
+					//å³ä¸Š
 					else if (i == 9)
 					{
 						DrawButton(AgeCoinButton);
@@ -368,31 +382,45 @@ void Instruction(ExMessage m,IMAGE imgbk) {
 	return;
 }
 
-//µã»÷Ôö¼Ó¾­Ñé
+//ç‚¹å‡»å¢åŠ ç»éªŒ
 void Click() {
 
 }
 
+//çªç ´ç•Œé¢æ˜¾ç¤º
+void LvlUpScreen(int rate) {
+	IMAGE LvlUpUI;
+	loadimage(&LvlUpUI, "LvlUpUI.png");
+	putimage(512 - LvlUpUI.getwidth() / 2, 650, &LvlUpUI);
+	settextcolor(RGB(0,0,0));
+	settextstyle(15, 0, "å®‹ä½“");
+	char text[10];
+	sprintf(text, "%d", rate);
+	outtextxy(512 - 60, 650 + textheight(text), "çªç ´æ¦‚ç‡:");
+	outtextxy(512 + 10, 650 + textheight(text), text);
+	outtextxy(512 + textwidth(text) + 10, 650 + textheight(text), "%");
+
+}
 
 
 int main()
 {
-	//´´½¨Ö÷´°¿Ú
+	//åˆ›å»ºä¸»çª—å£
 	HWND MainCamera = initgraph(1024, 1024);
-	//Ìí¼Ó±³¾°Í¼
+	//æ·»åŠ èƒŒæ™¯å›¾
 	IMAGE imgBK, imgUI, imgBag;
 	loadimage(&imgBK, "beijintu.png");
 	loadimage(&imgBag, "BeiBao(1).png");
 	putimage(0, 0, &imgBK);
 	setfillcolor(RGB(0, 0, 0));
 	fillroundrect(200, 765, 824, 785, 20, 10);
-	//Éú³ÉËæ»úÃû×Ö
+	//ç”Ÿæˆéšæœºåå­—
 	GetName();
-	//»ñÈ¡Êó±êÏûÏ¢
+	//è·å–é¼ æ ‡æ¶ˆæ¯
 	ExMessage m;
 	peekmessage(&m, EX_MOUSE);
-	Instruction(m,imgBK);
-	//¿ªÊ¼
+	Instruction(m, imgBK);
+	//å¼€å§‹
 	BeginBatchDraw();
 	while (1)
 	{
@@ -409,36 +437,55 @@ int main()
 		UpdateData(DataButton, HP, ATK, DF, Lvl, Name);
 		CanLvlUp(LvlUpButton, CurExp, MaxExp);
 		UpdateCoin_Age(AgeCoinButton, Age, Coin);
-		//ÅĞ¶ÏÊÇ·ñÈ¥ĞŞÁ¶
+		//åˆ¤æ–­æ˜¯å¦å»ä¿®ç‚¼
 
 		peekmessage(&m, EX_MOUSE);
-		//ÅĞ¶Ïµã»÷Ôö¼Ó¾­Ñé
+		//åˆ¤æ–­ç‚¹å‡»å¢åŠ ç»éªŒ
 		/*if(Click())
 		{
 
 		}*/
-		//ÅĞ¶ÏÊÇ·ñÈ¥ÀúÁ·
+		//åˆ¤æ–­æ˜¯å¦å»å†ç»ƒ
 		if (IsClickButton(XiuXing, m))
 		{
 		}
 		if (IsClickButton(WeaponBagButton, m))
 		{
 			OpenBag(imgBag);
+			CloseButton_Bag->Canclick = true;
 		}
+		if (IsClickButton(CloseButton_Bag, m))
+		{
+			putimage(0, 0, &imgBK);
+			CloseButton_Bag->Canclick = false;
+		}
+		//å†ç»ƒ
 		if (IsClickButton(Adventure, m))
 		{
 		}
+		//å•†åŸ
 		if (IsClickButton(ShoppingMall, m))
 		{
 		}
+		//çªç ´
 		if (IsClickButton(LvlUpButton, m))
-		{
-			DeBug(m);
+		{			
+			DrawButton(LvlUpButton2);
+			Sleep(100);
+			LvlUpScreen(rate);
+			LvlUpButton->Canclick == false;
+			LvlUpButton2->Canclick == true;
 		}
-		if (IsClickButton(DataButton, m))
+		if (IsClickButton(LvlUpButton2, m))
 		{
-			HP++;
+			//çªç ´å‡½æ•°
+			//()
+
+			putimage(0, 0, &imgBK);
+			LvlUpButton2->Canclick == false;
+			LvlUpButton->Canclick == true;
 		}
+
 
 
 

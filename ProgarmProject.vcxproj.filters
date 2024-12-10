@@ -35,5 +35,8 @@
     <Image Include="BeiBao(1).png">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="LvlUpUI.png">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

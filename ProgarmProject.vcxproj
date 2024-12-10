@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="BeiBao(1).png" />
+    <Image Include="LvlUpUI.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
