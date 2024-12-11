@@ -68,8 +68,10 @@ Button* LvlUpButton2 = MakeButton(512 - 50, 700, 100, 50, "确认突破", RGB(13
 Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
 Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
 Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
-Button* CloseButton_Bag = MakeButton(720, 70, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* CloseButton_Bag = MakeButton(720, 50, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
 Button* IfLvlUpButton = MakeButton(720, 720, 35, 35, "是否突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+
+Button* CloseButton_All = MakeButton(1024 - 90, 10, 70, 35, "保存并退出", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
 
 
 
@@ -253,7 +255,7 @@ void UpdateCoin_Age(Button* btn, int Age, int Coin) {
 //经验即经验条的显示
 void UpdateExp_Lvl(int CurExp, int MaxExp) {
 	//文字
-	settextcolor(RGB(0, 191, 255));
+	settextcolor(BLACK);
 	settextstyle(30, 0, "宋体");
 	char textCur[10], textMax[10];
 	sprintf(textCur, "%d", CurExp);
@@ -280,7 +282,7 @@ void OpenBag(IMAGE imgBag) {
 	//主体框架
 	int h = imgBag.getheight();
 	int w = imgBag.getwidth();
-	putimage(512 - (w / 2), 512 - (h / 2) - 150, &imgBag);
+	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);
 	DrawButton(CloseButton_Bag);
 	//文字
 	//1.标题
@@ -290,7 +292,12 @@ void OpenBag(IMAGE imgBag) {
 	const char* text = "背包";
 	int textw = textwidth(text);
 	int xx = 512 - (textw / 2);
-	outtextxy(xx, 512 - 450, text);
+	outtextxy(xx, 512 - 470, text);
+
+}
+
+//显示装备
+void ShowItem() {
 
 }
 
@@ -382,10 +389,6 @@ void Instruction(ExMessage m, IMAGE imgbk) {
 	return;
 }
 
-//点击增加经验
-void Click() {
-
-}
 
 //突破界面显示
 void LvlUpScreen(int rate) {
@@ -399,6 +402,30 @@ void LvlUpScreen(int rate) {
 	outtextxy(512 - 60, 650 + textheight(text), "突破概率:");
 	outtextxy(512 + 10, 650 + textheight(text), text);
 	outtextxy(512 + textwidth(text) + 10, 650 + textheight(text), "%");
+}
+
+//点击增加经验
+void Click() {
+
+}
+
+//商城界面
+void ShowMall() {
+
+}
+
+//历练框
+void GoAdventure() {
+
+}
+
+//突破
+void TuPo() {
+
+}
+
+//保存
+void Save_All() {
 
 }
 
@@ -433,6 +460,7 @@ int main()
 		DrawButton(LvlUpButton);
 		DrawButton(DataButton);
 		DrawButton(AgeCoinButton);
+		DrawButton(CloseButton_All);
 
 		UpdateExp_Lvl(CurExp, MaxExp);
 		UpdateData(DataButton, HP, ATK, DF, Lvl, Name);
@@ -464,38 +492,26 @@ int main()
 		//历练
 		if (IsClickButton(Adventure, m))
 		{
+			GoAdventure();
 		}
 		//商城
 		if (IsClickButton(ShoppingMall, m))
-		{
+		{			
+			ShowMall();
 		}
 		//突破
 		if (IsClickButton(LvlUpButton, m))
 		{
-			//DrawButton(LvlUpButton2);
-			//LvlUpScreen(rate);
-			//LvlUpButton->Canclick == false;
-			//LvlUpButton2->Canclick == true;
-			//if (m.message ==WM_LBUTTONUP &&IsClickButton(LvlUpButton2, m))
-			//{
-			//	//突破函数
-			//	//()
-			//	putimage(0, 0, &imgBK);
-			//	LvlUpButton2->Canclick == false;
-			//	LvlUpButton->Canclick == true;
-			//}
+			TuPo();
 		}
-
-
-
-
-
-
+		if (IsClickButton(CloseButton_All, m))
+		{
+			Save_All();
+			break;
+		}
 		FlushBatchDraw();
 	}
 	EndBatchDraw();
-
-	getchar();
 	closegraph();
 
 	return 0;
