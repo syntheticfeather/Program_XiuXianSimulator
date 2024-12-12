@@ -405,8 +405,16 @@ void LvlUpScreen(int rate) {
 }
 
 //点击增加经验
-void Click() {
-
+void Click(ExMessage m,IMAGE imgBK) {
+	if (m.message == WM_LBUTTONDOWN)
+	{
+		peekmessage(&m, EX_MOUSE);
+		if (m.message == WM_LBUTTONUP)
+		{
+			CurExp += 1;
+			putimage(0, 0, &imgBK);
+		}
+	}
 }
 
 //商城界面
@@ -420,8 +428,12 @@ void GoAdventure() {
 }
 
 //突破
-void TuPo() {
-
+void TuPo(int rate,IMAGE imgBK) {
+	srand(time(NULL));
+	//Temp = rand()
+	Lvl += 1;
+	CurExp -= MaxExp;
+	putimage(0, 0, &imgBK);
 }
 
 //保存
@@ -453,6 +465,7 @@ int main()
 	BeginBatchDraw();
 	while (1)
 	{
+
 		DrawButton(XiuXing);
 		DrawButton(WeaponBagButton);
 		DrawButton(Adventure);
@@ -471,11 +484,7 @@ int main()
 		//判断是否去修炼
 
 		peekmessage(&m, EX_MOUSE);
-		//判断点击增加经验
-		/*if(Click())
-		{
-
-		}*/
+		Click(m,imgBK);
 		//判断是否去历练
 		if (IsClickButton(XiuXing, m))
 		{
@@ -503,13 +512,14 @@ int main()
 		//突破
 		if (IsClickButton(LvlUpButton, m))
 		{
-			TuPo();
+			TuPo(rate,imgBK);
 		}
 		if (IsClickButton(CloseButton_All, m))
 		{
 			Save_All();
 			break;
 		}
+		
 		FlushBatchDraw();
 	}
 	EndBatchDraw();
