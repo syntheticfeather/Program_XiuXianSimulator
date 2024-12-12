@@ -35,7 +35,7 @@ float ATK = 1.0;
 float DF = 1.0;
 int rate = 80;
 int Lvl = 0;
-int CurExp = 16;
+int CurExp = 8;
 int MaxExp = 10;
 int Age = 1000;
 int Coin = 4;
@@ -461,6 +461,7 @@ int main()
 		DrawButton(DataButton);
 		DrawButton(AgeCoinButton);
 		DrawButton(CloseButton_All);
+		fillroundrect(200, 765, 824, 785, 20, 10);
 
 		UpdateExp_Lvl(CurExp, MaxExp);
 		UpdateData(DataButton, HP, ATK, DF, Lvl, Name);
