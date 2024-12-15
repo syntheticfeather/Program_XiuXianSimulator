@@ -47,6 +47,7 @@ char NameList[20][20] = {
 	"苗权震","面千尘","南宫灼光","肜洛意","面修文",
 	"荆苍何","越松南","越炎冥","华明泽","面非寒",
 };
+
 const char LvlList[71][20] = {
 	"练气期一阶","练气期二阶","练气期三阶","练气期四阶","练气期五阶","练气期六阶","练气期七阶","练气期八阶","练气期九阶","练气期圆满",
 	"筑基期一阶","筑基期二阶","筑基期三阶","筑基期四阶","筑基期五阶","筑基期六阶","筑基期七阶","筑基期八阶","筑基期九阶","筑基期圆满",
@@ -91,7 +92,7 @@ void DeBug(ExMessage m)
 
 //初始化姓名
 void GetName() {
-	if (Name)
+	if (Name == NULL)
 	{
 		srand((unsigned int)time(NULL));
 		strcpy(Name, NameList[rand() % 20]);
@@ -437,8 +438,20 @@ void TuPo(int rate,IMAGE imgBK) {
 }
 
 //保存
+//保存是否是新手，三维，概率，等级，经验值，最大经验值，年龄，金币，姓名
+//装备，
 void Save_All() {
-
+	FILE* file = fopen("data.txt", "w");
+	fprintf(file, "%d %f %f %f %d %d %d %d %d %d %s",
+		IsBeginner, HP, ATK, DF, rate, Lvl, CurExp, MaxExp, Age, Coin, Name);
+	fclose(file);
+}
+//读取数据
+void Read_All(){
+	FILE* file = fopen("data.txt", "r");
+	fscanf(file, "%d %f %f %f %d %d %d %d %d %d %s",
+		&IsBeginner, &HP, &ATK, &DF, &rate, &Lvl, &CurExp, &MaxExp, &Age, &Coin, &Name);
+	fclose(file);
 }
 
 
@@ -455,6 +468,7 @@ int main()
 	putimage(0, 0, &imgBK);
 	setfillcolor(RGB(0, 0, 0));
 	fillroundrect(200, 765, 824, 785, 20, 10);
+	Read_All();
 	//生成随机名字
 	GetName();
 	//获取鼠标消息
@@ -474,6 +488,7 @@ int main()
 		DrawButton(DataButton);
 		DrawButton(AgeCoinButton);
 		DrawButton(CloseButton_All);
+		setfillcolor(RGB(0, 0, 0));
 		fillroundrect(200, 765, 824, 785, 20, 10);
 
 		UpdateExp_Lvl(CurExp, MaxExp);
@@ -514,6 +529,7 @@ int main()
 		{
 			TuPo(rate,imgBK);
 		}
+		//退出并保存
 		if (IsClickButton(CloseButton_All, m))
 		{
 			Save_All();
