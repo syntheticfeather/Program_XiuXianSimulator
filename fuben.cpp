@@ -1,12 +1,12 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS 1
 
-#include<stdio.h>
 #include<easyx.h>
+#include<stdio.h>
+#include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
-#include<stdlib.h>
 #include<time.h>
-
+#include"ShoppingMall.h"
 
 //按钮结构体，记录按钮四个角的位置
 struct Button
@@ -29,7 +29,7 @@ Button* MakeButton(int x, int y, int w, int h,
 	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor);
 void LvlUpScreen(int);
 
-bool IsBeginner = false;
+bool IsBeginner = true;
 float HP = 1.0;
 float ATK = 1.0;
 float DF = 1.0;
@@ -69,7 +69,11 @@ Button* LvlUpButton2 = MakeButton(512 - 50, 700, 100, 50, "确认突破", RGB(13
 Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
 Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
 Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
+
 Button* CloseButton_Bag = MakeButton(720, 50, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* CloseButton_Adven = MakeButton(512 - 50, 600, 100, 40, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+
+
 Button* IfLvlUpButton = MakeButton(720, 720, 35, 35, "是否突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
 
 Button* CloseButton_All = MakeButton(1024 - 90, 10, 70, 35, "保存并退出", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
@@ -269,6 +273,7 @@ void UpdateExp_Lvl(int CurExp, int MaxExp) {
 	//经验条
 	setfillcolor(RGB(255, 222, 146));
 	float rate = (CurExp + 0.001) / MaxExp;
+	//解决超出问题
 	if (rate > 1)
 	{
 		rate = 1.0;
@@ -278,31 +283,7 @@ void UpdateExp_Lvl(int CurExp, int MaxExp) {
 	fillroundrect(202, 767, right, 783, 20, 10);
 }
 
-//背包装备显示
-void OpenBag(IMAGE imgBag) {
-	//主体框架
-	int h = imgBag.getheight();
-	int w = imgBag.getwidth();
-	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);
-	DrawButton(CloseButton_Bag);
-	//文字
-	//1.标题
-	settextcolor(BLACK);
-	setbkmode(TRANSPARENT);
-	settextstyle(40, 0, "宋体");
-	const char* text = "背包";
-	int textw = textwidth(text);
-	int xx = 512 - (textw / 2);
-	outtextxy(xx, 512 - 470, text);
-
-}
-
-//显示装备
-void ShowItem() {
-
-}
-
-
+//新手教程句子数组
 const char BeginText[10][100] = {
 	"红尘三千小世界，修真历练成真仙。欢迎来到修仙模拟器。",
 	"上一世的你在成仙渡劫时不幸被兄弟老婆背叛，阴差阳错回到了18岁那年。",
@@ -316,6 +297,7 @@ const char BeginText[10][100] = {
 	"灵石数量以及修炼时长会显示在右上。",
 
 };
+
 //新手教程指导
 void Instruction(ExMessage m, IMAGE imgbk) {
 	if (IsBeginner)
@@ -390,7 +372,6 @@ void Instruction(ExMessage m, IMAGE imgbk) {
 	return;
 }
 
-
 //突破界面显示
 void LvlUpScreen(int rate) {
 	IMAGE LvlUpUI;
@@ -406,7 +387,7 @@ void LvlUpScreen(int rate) {
 }
 
 //点击增加经验
-void Click(ExMessage m,IMAGE imgBK) {
+void Click(ExMessage m, IMAGE imgBK) {
 	if (m.message == WM_LBUTTONDOWN)
 	{
 		peekmessage(&m, EX_MOUSE);
@@ -418,35 +399,65 @@ void Click(ExMessage m,IMAGE imgBK) {
 	}
 }
 
-//商城界面
-void ShowMall() {
+
+//背包装备显示
+void OpenBag(IMAGE imgBag) {
+	//主体框架
+	int h = imgBag.getheight();
+	int w = imgBag.getwidth();
+	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);
+	DrawButton(CloseButton_Bag);
+	//文字
+	//1.标题
+	settextcolor(BLACK);
+	setbkmode(TRANSPARENT);
+	settextstyle(40, 0, "宋体");
+	const char* text = "背包";
+	int textw = textwidth(text);
+	int xx = 512 - (textw / 2);
+	outtextxy(xx, 512 - 470, text);
 
 }
 
-//历练框
-void GoAdventure() {
+//显示装备
+void ShowItem() {
 
+}
+
+//商城界面
+void ShowMall(IMAGE imgBag) {
+	int h = imgBag.getheight();
+	int w = imgBag.getwidth();
+	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);
+}
+
+//历练框
+void GoAdventure(IMAGE imgBag) {
+	int h = imgBag.getheight();
+	int w = imgBag.getwidth();
+	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);
+	DrawButton(CloseButton_Adven);
 }
 
 //突破
 void TuPo(int rate,IMAGE imgBK) {
-	srand(time(NULL));
-	//Temp = rand()
 	Lvl += 1;
 	CurExp -= MaxExp;
 	putimage(0, 0, &imgBK);
 }
 
 //保存
-//保存是否是新手，三维，概率，等级，经验值，最大经验值，年龄，金币，姓名
-//装备，
+//保存是否是新手，三维，概率，等级，经验值，最大经验值，年龄，金币，姓名，
+// 装备信息
 void Save_All() {
 	FILE* file = fopen("data.txt", "w");
 	fprintf(file, "%d %f %f %f %d %d %d %d %d %d %s",
 		IsBeginner, HP, ATK, DF, rate, Lvl, CurExp, MaxExp, Age, Coin, Name);
 	fclose(file);
 }
+
 //读取数据
+//装备信息
 void Read_All(){
 	FILE* file = fopen("data.txt", "r");
 	fscanf(file, "%d %f %f %f %d %d %d %d %d %d %s",
@@ -488,6 +499,7 @@ int main()
 		DrawButton(DataButton);
 		DrawButton(AgeCoinButton);
 		DrawButton(CloseButton_All);
+		//经验条
 		setfillcolor(RGB(0, 0, 0));
 		fillroundrect(200, 765, 824, 785, 20, 10);
 
@@ -514,15 +526,32 @@ int main()
 			putimage(0, 0, &imgBK);
 			CloseButton_Bag->Canclick = false;
 		}
+
+
 		//历练
 		if (IsClickButton(Adventure, m))
 		{
-			GoAdventure();
+			GoAdventure(imgBag);
+			CloseButton_Adven->Canclick = true;		
+		}
+		//continue
+		if (1) 
+		{
+
+		}
+
+		if (IsClickButton(CloseButton_Adven, m))
+		{
+			putimage(0, 0, &imgBK);
+			CloseButton_Adven->Canclick = false;
 		}
 		//商城
+
+
 		if (IsClickButton(ShoppingMall, m))
 		{			
-			ShowMall();
+			ShowMall(imgBag);
+			
 		}
 		//突破
 		if (IsClickButton(LvlUpButton, m))

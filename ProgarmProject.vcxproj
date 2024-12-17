@@ -127,15 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Adventure\Adventure.cpp" />
-    <ClCompile Include="MainScreen\fuben.cpp" />
-    <ClCompile Include="MainScreen\MainScreen.cpp" />
-    <ClCompile Include="ShoppingMall\ShoppingMall.cpp" />
-    <ClCompile Include="XiuXian\XiuXian.cpp" />
+    <ClCompile Include="Adventure.cpp" />
+    <ClCompile Include="fuben.cpp" />
+    <ClCompile Include="ShoppingMall.cpp" />
+    <ClCompile Include="XiuXian.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="BeiBao(1).png" />
     <Image Include="LvlUpUI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ShoppingMall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
