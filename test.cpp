@@ -7,7 +7,7 @@
 #include<stdbool.h>
 #include<time.h>
 #include<pthread.h>
-
+#include"Adven.h"
 
 
 
@@ -27,7 +27,6 @@ struct Button
 	COLORREF ClickColor;
 	char* text;
 	bool Canclick = true;
-
 };
 
 
@@ -72,6 +71,9 @@ struct Player_
 	int Age = 1000;
 	int Coin = 4;
 	char Name[10];
+	struct Weapon* WearingWeapon;//武器槽
+	struct Armor* WearingArmor;//防具槽
+	struct Decoration* WearingDecoration;//饰品槽
 
 };
 Player_* Player = (Player_*)malloc(sizeof(Player_));
@@ -79,6 +81,7 @@ Player_* Player = (Player_*)malloc(sizeof(Player_));
 
 IMAGE imgBK, imgBag, LvlUpUI;
 bool IsQuit = false;
+
 char NameList[20][20] = {
 
 	"鲁墨尘","祈墨珏","苗墨北","祈诺昱","湫静安",
@@ -237,8 +240,10 @@ bool IsClickButton(Button* bn, ExMessage m) {
 		{
 			bn->curcolor = bn->incolor;
 		}
+		m.message = NULL;
 		return true;
 	}
+	m.message = NULL;
 	return false;
 }
 
@@ -314,9 +319,9 @@ void UpdateExp_Lvl(int CurExp, int MaxExp) {
 	char textCur[10], textMax[10];
 	sprintf(textCur, "%d", CurExp);
 	sprintf(textMax, "%d", MaxExp);
-	outtextxy(512 - (textwidth(textCur) / 2) - 70, 800, "经验值:");
+	outtextxy(512 - (textwidth(textCur) / 2) - 120, 800, "经验值:");
 	settextcolor(BLACK);
-	outtextxy(512, 800, textCur);
+	outtextxy(512 , 800, textCur);
 	outtextxy(512 + (textwidth(textCur)) + 20, 800, "/");
 	outtextxy(512 + (textwidth(textCur)) + 45, 800, textMax);
 	//经验条
@@ -480,29 +485,15 @@ void ShowitemInMall() {
 }
 
 //历练框
-void GoAdventure(IMAGE imgBag) {
+void GoAdventure(IMAGE imgBag,ExMessage m) {
+	m.message = NULL;
 	int h = imgBag.getheight();//600
 	int w = imgBag.getwidth();//508
 	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);//34
-	//printf("%d\n%d", 512 - (w / 2), 512 - (h / 2) - 170);
+	//printf("%d\n%d\n", 512 - (w / 2), 512 - (h / 2) - 170);
 	DrawButton(CloseButton_Adven);
 	DrawButton(ContinueButton);
-	//调用adven库
-
-	//outtextxy()，文字与adven联合image里输入文字
-	//int i;
-	//for (i = 0; i < 4; i++)
-	//{
-
-	//	if (i % 4 == 0)
-	//	{
-	//		putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);//34
-	//		DrawButton(CloseButton_Adven);
-	//		DrawButton(ContinueButton);
-	//	}
-	//	outtextxy(512 - (w / 2), 512 - (h / 2) - 120 + ((i % 4) * 100), "nihao ");
-	//	//超出范围，刷屏重新开始
-	//}
+	AdventureMain(Player);	
 }
 
 //突破
@@ -526,7 +517,8 @@ void Save_All() {
 	FILE* file = fopen("data.txt", "w");
 	fprintf(file, "%d %f %f %f %d %d %d %d %d %d %d %s",
 		Player->IsBeginner, Player->HP, Player->ATK, Player->DF, 
-		Player->rate, Player->Lvl, Player->CurExp, Player->MaxExp, Player->Age, Player->Coin,  Player->Recovery, Player->Name);
+		Player->rate, Player->Lvl, Player->CurExp, Player->MaxExp,
+		Player->Age, Player->Coin,  Player->Recovery, Player->Name);
 	fclose(file);
 	//以及装备背包保存
 	/////
@@ -539,14 +531,22 @@ void Save_All() {
 void Load_All() {
 	FILE* file = fopen("data.txt", "r");
 	fscanf(file, "%d %f %f %f %d %d %d %d %d %d %d %s",
-		&Player->IsBeginner, &Player->HP, &Player->ATK, &Player->DF, &Player->rate, &Player->Lvl, &Player->CurExp, &Player->MaxExp, &Player->Age, &Player->Coin, &Player->Recovery, &Player->Name);
+		&Player->IsBeginner, &Player->HP, &Player->ATK, &Player->DF,
+		&Player->rate, &Player->Lvl, &Player->CurExp, &Player->MaxExp, 
+		&Player->Age, &Player->Coin, &Player->Recovery, &Player->Name);
 	fclose(file);
 	//以及装备背包读取
 	/////
 	//
 	/////
 }
-
+void Update() {
+	UpdateExp_Lvl(Player->CurExp, Player->MaxExp);
+	UpdateData(DataButton, Player->HP, Player->ATK, Player->DF, Player->Lvl, Player->Name);
+	CanLvlUp(LvlUpButton, Player->CurExp, Player->MaxExp);
+	UpdateCoin_Age(AgeCoinButton, Player->Age, Player->Coin);
+	LvlUpScreen(Player->rate);
+}
 
 struct ThreadData {
 	Button* button;
@@ -591,26 +591,27 @@ void* handleButtonClick(void* arg) {
 
 int main()
 {
+	//加载数据
+	Load_All();
+	//生成随机名字
+	GetName();
 	//创建主窗口
 	HWND MainCamera = initgraph(1024, 1024);
 	//加载图片
-
 	loadimage(&imgBK, "beijintu.png");
 	loadimage(&imgBag, "BeiBao(1).png");
 	loadimage(&LvlUpUI, "LvlUpUI.png");
 	//添加背景图
 	putimage(0, 0, &imgBK);
-	setfillcolor(RGB(0, 0, 0));
-	fillroundrect(200, 765, 824, 785, 20, 10);
-	Load_All();
-
-
-	//生成随机名字
-	GetName();
-	//获取鼠标消息
+	//新手教程
 	ExMessage m;
 	peekmessage(&m, EX_MOUSE);
 	Instruction(m, imgBK);
+
+	setfillcolor(RGB(0, 0, 0));
+	fillroundrect(200, 765, 824, 785, 20, 10);
+	
+	//获取鼠标消息
 	//开始
 	BeginBatchDraw();
 	while (1)
@@ -628,12 +629,12 @@ int main()
 		setfillcolor(RGB(0, 0, 0));
 		fillroundrect(200, 765, 824, 785, 20, 10);
 		//更新数据
-		UpdateExp_Lvl(Player->CurExp, Player->MaxExp);
-		UpdateData(DataButton, Player->HP, Player->ATK, Player->DF, Player->Lvl, Player->Name);
-		CanLvlUp(LvlUpButton, Player->CurExp, Player->MaxExp);
-		UpdateCoin_Age(AgeCoinButton, Player->Age, Player->Coin);
-		LvlUpScreen(Player->rate);
-
+		//UpdateExp_Lvl(Player->CurExp, Player->MaxExp);
+		//UpdateData(DataButton, Player->HP, Player->ATK, Player->DF, Player->Lvl, Player->Name);
+		//CanLvlUp(LvlUpButton, Player->CurExp, Player->MaxExp);
+		//UpdateCoin_Age(AgeCoinButton, Player->Age, Player->Coin);
+		//LvlUpScreen(Player->rate);
+		Update();
 		peekmessage(&m, EX_MOUSE);
 
 		//Click(m, imgBK);
@@ -724,8 +725,15 @@ int main()
 		if (CloseButton_Bag->Canclick == true)
 		{
 			//判断是否点击
+			for (int i = 0; i < NUM; i++)
+			{
+				if (IsClickButton(MallItem[i],m));
+				{
+					printf("被点击了");
+				}
+			}
 		}
-		//for ( !=NULL)
+		
 
 
 
