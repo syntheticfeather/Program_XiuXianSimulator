@@ -46,7 +46,7 @@ int RandomDigit(int Range,int Start){
     time_t NowTime;
     NowTime = time(NULL);//获取当前时间
     srand((unsigned)NowTime);
-    return(rand()%Range+Start);
+    return((rand()%Range)+Start);
     }
     
 //随机数函数产生一个范围为Range,从Start开始的随机数
@@ -54,7 +54,6 @@ int RandomDigit(int Range,int Start){
 
 int FightModel(struct Player *Player,struct Player *Enemy)//注意此处传入的是结构指针!
 {
-    int CountdownTimer = 1;//攻击冷却
     int flag=1;//标识是否处于战斗状态
     int Attacker=0;//用来标识攻击者是谁,'0'即Player,'1'即Enemy
     int Winner=0;//默认玩家0胜利,若敌人胜利,则标记为1
@@ -118,7 +117,7 @@ int Calculator(int Level,int CheckAspect)//CheckAspect参数 1/2/3 stand for HP/
     }
 
     if(Aspect==3){
-        result= 0;
+        result= 1;
         while(CalculateTimes-1){
             result = (int)((double)(result+2))*1.2;
             CalculateTimes-=1;}
@@ -131,11 +130,14 @@ int Calculator(int Level,int CheckAspect)//CheckAspect参数 1/2/3 stand for HP/
 struct Player* EnemyCreator(struct Player* Player){
     struct Player* Enemy=(struct Player*)calloc(1,sizeof(struct Player));
     int Level =RandomDigit(3,((Player->Level)-1));//随机生成敌人的等级
+    if(Level == 0){
+        Level+=1;
+    }
     Enemy->HP=RandomDigit(Calculator(Level,1)*0.4,Calculator(Level,1)*0.8);
     Enemy->Attack=RandomDigit(Calculator(Level,2)*0.4,Calculator(Level,2)*0.8);
     Enemy->Defence=RandomDigit(Calculator(Level,3)*0.4,Calculator(Level,3)*0.8);//敌人的属性在对应等级基础属性的0.8~1.2倍浮动
     return Enemy;
-}
+}//传入Player的数据,根据Player的等级随机生成敌人
 //--------------------------------------------------//--------------------------------------------------//
 
 //事件源码//
@@ -182,24 +184,57 @@ void AdventureCase_2(struct Player* Player){
 }
 //--------------------------------------------------//--------------------------------------------------//
 //三.偶遇敌人1 战斗模块 胜利或失败
-// void AdventureCase_3(struct Player* Player){
-//     //文本处理
-//     FILE* Diary = NULL;
-//     char Description[1000]="你偶遇了敌人!进入战斗!.\n";
-//     Diary = fopen("XiuXianDiary.txt","a");
-//     fputs(Description,Diary);
-//     //游戏内容
-//     printf("你御剑准备前往山脚下的坊市感受人间烟火,突然一道法术袭来,你游云般躲开后,发现来人正是你的仇敌!");
-//     if(FightModel(Player,EnemyCreator(Player))=1)//胜利;
-    
-// }
+void AdventureCase_3(struct Player* Player){
+    //文本处理
+    FILE* Diary = NULL;
+    char Description[1000]="你偶遇了敌人!进入战斗!.\n";
+    char Description2[1000] = "经过一番苦战,你取得了胜利,并且获得了一大笔钱.\n";
+    char Description3[1000] = "经过一番苦战,你失败遁走,并且损失了一大笔钱.\n";
+    Diary = fopen("XiuXianDiary.txt","a");
+    fputs(Description,Diary);
+    //游戏内容
+    printf("你御剑准备前往山脚下的坊市感受人间烟火,突然一道法术袭来,你游云般躲开后,发现来人正是你的仇敌!");//操作端显示
+    if(FightModel(Player,EnemyCreator(Player))==1)//胜利
+    {
+        Player->Money+=Player->Money;
+        printf("战斗胜利!你打开对方的储物戒指,发现了一大笔钱!");//操作端显示
+        fputs(Description2,Diary);
+        fclose(Diary);
+        return;
+    }
+    if(FightModel(Player,EnemyCreator(Player))==0)//失败
+    {
+        Player->Money= Player->Money*0.5;
+        printf("战斗失败!所幸你曾经学过三千雷动,得以逃离,然而却在战斗中损失了自己的储物戒指...");//操作端显示
+        fputs(Description3,Diary);
+        fclose(Diary);
+        return;
+    }
+}
+//--------------------------------------------------//--------------------------------------------------//
+//当按下历练按钮时,只需要调用该函数即可
+void AdventureMain(struct Player* Player)
+{
+    int CaseNumber = RandomDigit(3,1);
+    switch(CaseNumber){
+        case 1:AdventureCase_1(Player);//执行事件1函数体
+                break ;//返回(这里可以休眠 让画面暂时停止一段时间?需要你设计一下)
+        case 2:AdventureCase_2(Player);//执行事件2函数体
+                break ;
+        case 3:AdventureCase_3(Player);//执行事件3函数体
+                break ;
+        default:break ;
+    }
+    return;
+}
 int main(){
-    struct Player *Player1 = (struct Player*)malloc(sizeof(struct Player));
+    struct Player *Player1 = (struct Player*)calloc(1,sizeof(struct Player));
     Player1->Attack=10;
     Player1->HP=10;
     Player1->Defence=10;
+    Player1->Level=1;
     int i = FightModel(Player1,Player1);
     AdventureCase_1(Player1);
+    AdventureMain(Player1);
     return 0;
-
- }
+    }
