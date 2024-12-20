@@ -74,7 +74,7 @@ Button* Adventure = MakeButton(640 - 50, 929, 100, 50, "历练", RGB(137, 207, 240
 Button* ShoppingMall = MakeButton(1024 - 178, 929, 100, 50, "商城", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
 Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
 
-Button* ContinueButton = MakeButton(512 - 50, 520, 100, 50, "继续", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false);
+Button* ContinueButton = MakeButton(512 - 50, 520, 100, 50, "继续", RGB(255, 166, 87), RGB(255, 166, 87), RGB(255, 166, 87),false);
 //显示
 Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255),false);
 Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255),false);
@@ -150,32 +150,23 @@ int main()
 				CloseButton_Bag->Canclick = true;
 			}
 			//历练
-			if (isclicked == false && IsClickButton(Adventure, m))
+			if ( IsClickButton(Adventure, m))
 			{				
-				flushmessage();
-				isclicked = true;
 				GoAdventure(imgBag,Player);
-				flushmessage();
-				isclicked = false;
 				CloseButton_Adven->Canclick = true;
 				ContinueButton->Canclick = true;
 			}
 			//战斗继续，continue	
-			if (isclicked == false && IsClickButton(ContinueButton, m))
+			if (IsClickButton(ContinueButton, m))
 			{
-				flushmessage();
-				isclicked = true;
 				GoAdventure(imgBag, Player);
-				flushmessage();
-				isclicked = false;
 			}
 			//结束
 			if (IsClickButton(CloseButton_Adven, m))
 			{
 				putimage(0, 0, &imgBK);
 				CloseButton_Adven->Canclick = false;
-				ContinueButton->Canclick = false;
-				isclicked = false;
+				ContinueButton->Canclick = false;			
 			}
 
 			//商城

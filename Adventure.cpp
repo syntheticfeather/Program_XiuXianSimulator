@@ -30,20 +30,20 @@
 //
 //};
 struct Weapon {
-    int Attack;
-    int Money;
+	int Attack;
+	int Money;
 };
 struct Armor {
-    int HP;
-    int Defence;
-    int Money;
+	int HP;
+	int Defence;
+	int Money;
 };
 struct Decoration {
-    int Attack;
-    int HP;
-    int Defence;
-    int Money;
-    int Recovery;
+	int Attack;
+	int HP;
+	int Defence;
+	int Money;
+	int Recovery;
 };
 //ÉËº¦¹«Ê½:Ôì³ÉÉËº¦=¹¥»÷ÕßµÄ¹¥»÷¡Á(1-»¤¼×/100000+»¤¼×)
 //ÃâÉËÂÊ=»¤¼×/100000+»¤¼×
@@ -52,10 +52,10 @@ struct Decoration {
 
 
 int RandomDigit(int Range, int Start) {
-    time_t NowTime;
-    NowTime = time(NULL);//»ñÈ¡µ±Ç°Ê±¼ä
-    srand((unsigned)NowTime);
-    return((rand() % Range) + Start);
+	time_t NowTime;
+	NowTime = time(NULL);//»ñÈ¡µ±Ç°Ê±¼ä
+	srand((unsigned)NowTime);
+	return((rand() % Range) + Start);
 }
 
 //Ëæ»úÊıº¯Êı²úÉúÒ»¸ö·¶Î§ÎªRange,´ÓStart¿ªÊ¼µÄËæ»úÊı
@@ -63,40 +63,59 @@ int RandomDigit(int Range, int Start) {
 
 int FightModel(struct Player_* Player, struct Player_* Enemy)//×¢Òâ´Ë´¦´«ÈëµÄÊÇ½á¹¹Ö¸Õë!
 {
-    int flag = 1;//±êÊ¶ÊÇ·ñ´¦ÓÚÕ½¶·×´Ì¬
-    int Attacker = 0;//ÓÃÀ´±êÊ¶¹¥»÷ÕßÊÇË­,'0'¼´Player,'1'¼´Enemy
-    int Winner = 0;//Ä¬ÈÏÍæ¼Ò0Ê¤Àû,ÈôµĞÈËÊ¤Àû,Ôò±ê¼ÇÎª1
-    int EnemyHp = Enemy->HP;
-    int PlayerHp = Player->HP;
+	int flag = 1;//±êÊ¶ÊÇ·ñ´¦ÓÚÕ½¶·×´Ì¬
+	int Attacker = 0;//ÓÃÀ´±êÊ¶¹¥»÷ÕßÊÇË­,'0'¼´Player,'1'¼´Enemy
+	int Winner = 0;//Ä¬ÈÏÍæ¼Ò0Ê¤Àû,ÈôµĞÈËÊ¤Àû,Ôò±ê¼ÇÎª1
+	int EnemyHp = Enemy->HP;
+	int PlayerHp = Player->HP;
 
-    while (flag) {
-        switch (Attacker) {
-        case 0:EnemyHp -= (Player->ATK) * (1 - (Enemy->DF) / (100000 + (Enemy->DF)));
-            //printf("µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,µĞÈË»¹Ê£ÑªÁ¿%.2f!\n", (Player->ATK) * (1 - (Enemy->DF) / (100000 + (Enemy->DF))), EnemyHp);
-            outtextxy(262, 42 + 100, ("µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,µĞÈË»¹Ê£ÑªÁ¿%.2f!\n", (Player->ATK) * (1 - (Enemy->DF) / (100000 + (Enemy->DF))), EnemyHp));
-            //262,42
-            //´Ë´¦×¢ÒâĞèÒª¸ü¸ÄÎª²Ù×÷¶ËÏÔÊ¾!!!!!
+	while (flag) {
+		switch (Attacker) {
+		case 0:EnemyHp -= (Player->ATK) * (1 - (Enemy->DF) / (100000 + (Enemy->DF)));
+			//printf("µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,µĞÈË»¹Ê£ÑªÁ¿%.2f!\n", (Player->ATK) * (1 - (Enemy->DF) / (100000 + (Enemy->DF))), EnemyHp);
+			//outtextxy(262, 42 + 100, ("µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,µĞÈË»¹Ê£ÑªÁ¿%.2f!\n", (Player->ATK) * (1 - (Enemy->DF) / (100000 + (Enemy->DF))), EnemyHp));
+			//sprintf(DFText, "%d", (int)DF);
+			int te;
+			te = (Player->ATK) * (1 - (2, Enemy->DF) / (100000 + (Enemy->DF)));
+			char text1[100], text2[100];
+			sprintf(text1, "%d", (int)((Player->ATK) * (1 - (2, Enemy->DF) / (100000 + (Enemy->DF)))));
+			sprintf(text2, "%d", (int)EnemyHp);
+			outtextxy(262, 42 + 100, "µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É");
+			outtextxy(262 + textwidth("µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É"), 42 + 100, text1);
+			outtextxy(262 + textwidth("µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É"), 42 + 100, "        µãÉËº¦,");
+			outtextxy(262, 42 + 130, "µĞÈË»¹Ê£ÑªÁ¿");
+			outtextxy(262 + textwidth("µĞÈË»¹Ê£ÑªÁ¿"), 42 + 130, text2);
+			//262,42
+			//´Ë´¦×¢ÒâĞèÒª¸ü¸ÄÎª²Ù×÷¶ËÏÔÊ¾!!!!!
 
-            Attacker = 1;//×ª»»¹¥»÷Õß
-            if (EnemyHp <= 0) { flag = 0; Winner = 0; }//ÅĞ¶ÏÊÇ·ñËÀÍö ËÀÍöÊ±Ñ­»·½áÊø
-            break;//ÎŞÂÛÊÇ·ñËÀÍö Ìø³öswitch
+			Attacker = 1;//×ª»»¹¥»÷Õß
+			if (EnemyHp <= 0) { flag = 0; Winner = 0; }//ÅĞ¶ÏÊÇ·ñËÀÍö ËÀÍöÊ±Ñ­»·½áÊø
+			break;//ÎŞÂÛÊÇ·ñËÀÍö Ìø³öswitch
 
-        case 1:PlayerHp -= (Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF)));
-            //printf("ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,Äú»¹Ê£ÑªÁ¿%.2f!\n", (Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF))), PlayerHp);
-            outtextxy(262, 42 + 200, ("ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,Äú»¹Ê£ÑªÁ¿%.2f!\n", (Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF))), PlayerHp));
-            //´Ë´¦×¢ÒâĞèÒª¸ü¸ÄÎª²Ù×÷¶ËÏÔÊ¾!!!!!
-
-            Attacker = 0;//×ª»»¹¥»÷Õß
-            if (PlayerHp <= 0) { flag = 0; Winner = 1; }//ÅĞ¶ÏÊÇ·ñËÀÍö ËÀÍöÊ±Ñ­»·½áÊø
-            break;//ÎŞÂÛÊÇ·ñËÀÍö Ìø³öswitch
-        }
-        Sleep(1000);
-    }
-    if (Winner == 0)
-        return 1;
-    else if (Winner == 1)
-        return 0;
-    else return 4;
+		case 1:PlayerHp -= (Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF)));
+			//printf("ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,Äú»¹Ê£ÑªÁ¿%.2f!\n", (Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF))), PlayerHp);
+			outtextxy(262, 42 + 150, "ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,Äú»¹Ê£ÑªÁ¿%.2f!\n");
+			//´Ë´¦×¢ÒâĞèÒª¸ü¸ÄÎª²Ù×÷¶ËÏÔÊ¾!!!!!
+			char text3[100], text4[100];
+			sprintf(text3, "%d", (int)((Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF)))));
+			sprintf(text4, "%d", (int)PlayerHp);
+			outtextxy(262, 42 + 100, "ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É");
+			outtextxy(262 + textwidth("ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É"), 42 + 100, text3);
+			outtextxy(262 + textwidth("ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É"), 42 + 100, "        µãÉËº¦,");
+			outtextxy(262, 42 + 130, "Äú»¹Ê£ÑªÁ¿");
+			outtextxy(262 + textwidth("Äú»¹Ê£ÑªÁ¿"), 42 + 130, text4);
+			Attacker = 0;//×ª»»¹¥»÷Õß
+			if (PlayerHp <= 0) { flag = 0; Winner = 1; }//ÅĞ¶ÏÊÇ·ñËÀÍö ËÀÍöÊ±Ñ­»·½áÊø
+			break;//ÎŞÂÛÊÇ·ñËÀÍö Ìø³öswitch
+		}
+		EndBatchDraw();
+		Sleep(1000);
+	}
+	if (Winner == 0)
+		return 1;
+	else if (Winner == 1)
+		return 0;
+	else return 4;
 }
 
 //±¾º¯ÊıµÄ×÷ÓÃÊ±Í¨¹ıÊäÈëÍæ¼ÒºÍµĞÈËµÄÊıÖµ,½øĞĞ»ØºÏÖÆÕ½¶·,¹ı³ÌÖĞÔÚ²Ù×÷¶Î¿ÉÊÓ»¯Õ½¶·
@@ -107,50 +126,50 @@ int FightModel(struct Player_* Player, struct Player_* Enemy)//×¢Òâ´Ë´¦´«ÈëµÄÊÇ½
 
 int Calculator(int Level, int CheckAspect)//CheckAspect²ÎÊı 1/2/3 stand for HP/Attack/Defence
 {
-    int Aspect = CheckAspect;
-    int CalculateTimes = Level;
-    int result;
+	int Aspect = CheckAspect;
+	int CalculateTimes = Level;
+	int result;
 
-    if (Aspect == 1) {
-        result = 10;
-        while (CalculateTimes - 1) {
-            result = (int)((double)(result + 2)) * 1.2;
-            CalculateTimes -= 1;
-        }
-        return result;
-    }
+	if (Aspect == 1) {
+		result = 10;
+		while (CalculateTimes - 1) {
+			result = (int)((double)(result + 2)) * 1.2;
+			CalculateTimes -= 1;
+		}
+		return result;
+	}
 
-    if (Aspect == 2) {
-        result = 5;
-        while (CalculateTimes - 1) {
-            result = (int)((double)(result + 2)) * 1.2;
-            CalculateTimes -= 1;
-        }
-        return result;
-    }
+	if (Aspect == 2) {
+		result = 5;
+		while (CalculateTimes - 1) {
+			result = (int)((double)(result + 2)) * 1.2;
+			CalculateTimes -= 1;
+		}
+		return result;
+	}
 
-    if (Aspect == 3) {
-        result = 1;
-        while (CalculateTimes - 1) {
-            result = (int)((double)(result + 2)) * 1.2;
-            CalculateTimes -= 1;
-        }
-        return result;
-    }
+	if (Aspect == 3) {
+		result = 1;
+		while (CalculateTimes - 1) {
+			result = (int)((double)(result + 2)) * 1.2;
+			CalculateTimes -= 1;
+		}
+		return result;
+	}
 }
 //±¾º¯ÊıµÄ¹¦ÄÜÊÇÍ¨¹ı´«ÈëĞèÒª¼ÆËãµÄµÈ¼¶ÒÔ¼°ÈıÎ¬·½Ãæ,¼ÆËã¶ÔÓ¦µÈ¼¶µÄ»ù´¡ÊôĞÔ
 
 //--------------------------------------------------//--------------------------------------------------//
 struct Player_* EnemyCreator(struct Player_* Player) {
-    struct Player_* Enemy = (struct Player_*)calloc(1, sizeof(struct Player_));
-    int Level = RandomDigit(3, ((Player->Lvl) - 1));//Ëæ»úÉú³ÉµĞÈËµÄµÈ¼¶
-    if (Level == 0) {
-        Level += 1;
-    }
-    Enemy->HP = RandomDigit(Calculator(Level, 1) * 0.4, Calculator(Level, 1) * 0.8);
-    Enemy->ATK = RandomDigit(Calculator(Level, 2) * 0.4, Calculator(Level, 2) * 0.8);
-    Enemy->DF = RandomDigit(Calculator(Level, 3) * 0.4, Calculator(Level, 3) * 0.8);//µĞÈËµÄÊôĞÔÔÚ¶ÔÓ¦µÈ¼¶»ù´¡ÊôĞÔµÄ0.8~1.2±¶¸¡¶¯
-    return Enemy;
+	struct Player_* Enemy = (struct Player_*)calloc(1, sizeof(struct Player_));
+	int Level = RandomDigit(3, ((Player->Lvl) - 1));//Ëæ»úÉú³ÉµĞÈËµÄµÈ¼¶
+	if (Level == 0) {
+		Level += 1;
+	}
+	Enemy->HP = RandomDigit(Calculator(Level, 1) * 0.4, Calculator(Level, 1) * 0.8);
+	Enemy->ATK = RandomDigit(Calculator(Level, 2) * 0.4, Calculator(Level, 2) * 0.8);
+	Enemy->DF = RandomDigit(Calculator(Level, 3) * 0.4, Calculator(Level, 3) * 0.8);//µĞÈËµÄÊôĞÔÔÚ¶ÔÓ¦µÈ¼¶»ù´¡ÊôĞÔµÄ0.8~1.2±¶¸¡¶¯
+	return Enemy;
 }//´«ÈëPlayerµÄÊı¾İ,¸ù¾İPlayerµÄµÈ¼¶Ëæ»úÉú³ÉµĞÈË
 //--------------------------------------------------//--------------------------------------------------//
 
@@ -169,88 +188,88 @@ struct Player_* EnemyCreator(struct Player_* Player) {
 
 
 void AdventureCase_1(struct Player_* Player) {
-    //ÎÄ±¾´¦Àí
-    FILE* Diary = NULL;
-    char Description[1000] = "Äú½øĞĞÁËÀúÁ·,ÎŞÊÂ·¢Éú.\n";
-    Diary = fopen("XiuXianDiary.txt", "a");
-    fputs(Description, Diary);
-    fclose(Diary);
-    //ÓÎÏ·ÄÚÈİ
-    //printf("Äã³öÃÅ×ªÁËÒ»È¦,·¢ÏÖÌìÏÂÌ«Æ½,ÎŞÊÂ·¢Éú.\n");     //¸ÄÎª²Ù×÷¶ËÏÔÊ¾!
-    outtextxy(262, 42 + 200, ("Äã³öÃÅ×ªÁËÒ»È¦,·¢ÏÖÌìÏÂÌ«Æ½,ÎŞÊÂ·¢Éú.\n"));
-    return;
+	//ÎÄ±¾´¦Àí
+	FILE* Diary = NULL;
+	char Description[1000] = "Äú½øĞĞÁËÀúÁ·,ÎŞÊÂ·¢Éú.\n";
+	Diary = fopen("XiuXianDiary.txt", "a");
+	fputs(Description, Diary);
+	fclose(Diary);
+	//ÓÎÏ·ÄÚÈİ
+	//printf("Äã³öÃÅ×ªÁËÒ»È¦,·¢ÏÖÌìÏÂÌ«Æ½,ÎŞÊÂ·¢Éú.\n");     //¸ÄÎª²Ù×÷¶ËÏÔÊ¾!
+	outtextxy(262, 42 + 200, ("Äã³öÃÅ×ªÁËÒ»È¦,·¢ÏÖÌìÏÂÌ«Æ½,ÎŞÊÂ·¢Éú.\n"));
+	return;
 }
 
 //--------------------------------------------------//--------------------------------------------------//
 
 //¶ş.ÃÙµÃ´«³Ğ ĞŞÎª´óÔö
 void AdventureCase_2(struct Player_* Player) {
-    //ÎÄ±¾´¦Àí
-    FILE* Diary = NULL;
-    char Description[1000] = "ÄúÃÙµÃÁËÑ×µÛµÄ´«³Ğ!ĞŞÎªÔö¼Ó!.\n";
-    Diary = fopen("XiuXianDiary.txt", "a");
-    fputs(Description, Diary);
-    fclose(Diary);
-    //ÓÎÏ·ÄÚÈİ
-    //printf("ÕıÊÇº®·çÁİÙıÖ®Ê±,ÄãÎªÈ¡Å¯ÎóÈëµØµ×,È´·¢ÏÖ»ğÉ½Éî´¦µÄµØ»ğ,¶¨¾¦Ò»¿´,¾¹ÊÇÑ×µÛÏôÑ×µÄ´«³Ğ!ĞŞÎªÔö¼ÓÊ®·ÖÖ®ËÄ,¹¥»÷ÌáÉı.");//²Ù×÷¶ËÏÔÊ¾
-    outtextxy(262, 42 + 200, ("ÕıÊÇº®·çÁİÙıÖ®Ê±,ÄãÎªÈ¡Å¯ÎóÈëµØµ×,È´·¢ÏÖ»ğÉ½Éî´¦µÄµØ»ğ,"));
-    outtextxy(262, 42 + 240, ("¶¨¾¦Ò»¿´,¾¹ÊÇÑ×µÛÏôÑ×µÄ´«³Ğ!ĞŞÎªÔö¼ÓÊ®·ÖÖ®ËÄ,¹¥»÷ÌáÉı."));
-    Player->CurExp += Player->CurExp * 0.4;
-    Player->ATK += Player->ATK * 0.1;
-    return;
+	//ÎÄ±¾´¦Àí
+	FILE* Diary = NULL;
+	char Description[1000] = "ÄúÃÙµÃÁËÑ×µÛµÄ´«³Ğ!ĞŞÎªÔö¼Ó!.\n";
+	Diary = fopen("XiuXianDiary.txt", "a");
+	fputs(Description, Diary);
+	fclose(Diary);
+	//ÓÎÏ·ÄÚÈİ
+	//printf("ÕıÊÇº®·çÁİÙıÖ®Ê±,ÄãÎªÈ¡Å¯ÎóÈëµØµ×,È´·¢ÏÖ»ğÉ½Éî´¦µÄµØ»ğ,¶¨¾¦Ò»¿´,¾¹ÊÇÑ×µÛÏôÑ×µÄ´«³Ğ!ĞŞÎªÔö¼ÓÊ®·ÖÖ®ËÄ,¹¥»÷ÌáÉı.");//²Ù×÷¶ËÏÔÊ¾
+	outtextxy(262, 42 + 200, ("ÕıÊÇº®·çÁİÙıÖ®Ê±,ÄãÎªÈ¡Å¯ÎóÈëµØµ×,È´·¢ÏÖ»ğÉ½Éî´¦µÄµØ»ğ,"));
+	outtextxy(262, 42 + 240, ("¶¨¾¦Ò»¿´,¾¹ÊÇÑ×µÛÏôÑ×µÄ´«³Ğ!ĞŞÎªÔö¼ÓÊ®·ÖÖ®ËÄ,¹¥»÷ÌáÉı."));
+	Player->CurExp += Player->CurExp * 0.4;
+	Player->ATK += Player->ATK * 0.1;
+	return;
 }
 
 //--------------------------------------------------//--------------------------------------------------//
 
 //Èı.Å¼ÓöµĞÈË1 Õ½¶·Ä£¿é Ê¤Àû»òÊ§°Ü
 void AdventureCase_3(struct Player_* Player) {
-    //ÎÄ±¾´¦Àí
-    FILE* Diary = NULL;
-    char Description[1000] = "ÄãÅ¼ÓöÁËµĞÈË!½øÈëÕ½¶·!.\n";
-    char Description2[1000] = "¾­¹ıÒ»·¬¿àÕ½,ÄãÈ¡µÃÁËÊ¤Àû,²¢ÇÒ»ñµÃÁËÒ»´ó±ÊÇ®.\n";
-    char Description3[1000] = "¾­¹ıÒ»·¬¿àÕ½,ÄãÊ§°Ü¶İ×ß,²¢ÇÒËğÊ§ÁËÒ»´ó±ÊÇ®.\n";
-    Diary = fopen("XiuXianDiary.txt", "a");
-    fputs(Description, Diary);
-    //ÓÎÏ·ÄÚÈİ
-    //printf("ÄãÓù½£×¼±¸Ç°ÍùÉ½½ÅÏÂµÄ·»ÊĞ¸ĞÊÜÈË¼äÑÌ»ğ,Í»È»Ò»µÀ·¨ÊõÏ®À´,ÄãÓÎÔÆ°ã¶ã¿ªºó,·¢ÏÖÀ´ÈËÕıÊÇÄãµÄ³ğµĞ!");//²Ù×÷¶ËÏÔÊ¾
-    outtextxy(262, 42 + 200, ("ÄãÓù½£×¼±¸Ç°ÍùÉ½½ÅÏÂµÄ·»ÊĞ¸ĞÊÜÈË¼äÑÌ»ğ,"));
-    outtextxy(262, 42 + 240, ("Í»È»Ò»µÀ·¨ÊõÏ®À´,ÄãÓÎÔÆ°ã¶ã¿ªºó,·¢ÏÖÀ´ÈËÕıÊÇÄãµÄ³ğµĞ!"));
-    if (FightModel(Player, EnemyCreator(Player)) == 1)//Ê¤Àû
-    {
-        Player->Coin += Player->Coin;
-        //printf("Õ½¶·Ê¤Àû!Äã´ò¿ª¶Ô·½µÄ´¢Îï½äÖ¸,·¢ÏÖÁËÒ»´ó±ÊÇ®!");//²Ù×÷¶ËÏÔÊ¾
-        outtextxy(262, 42 + 280, ("Õ½¶·Ê¤Àû!Äã´ò¿ª¶Ô·½µÄ´¢Îï½äÖ¸,·¢ÏÖÁËÒ»´ó±ÊÇ®!"));
+	//ÎÄ±¾´¦Àí
+	FILE* Diary = NULL;
+	char Description[1000] = "ÄãÅ¼ÓöÁËµĞÈË!½øÈëÕ½¶·!.\n";
+	char Description2[1000] = "¾­¹ıÒ»·¬¿àÕ½,ÄãÈ¡µÃÁËÊ¤Àû,²¢ÇÒ»ñµÃÁËÒ»´ó±ÊÇ®.\n";
+	char Description3[1000] = "¾­¹ıÒ»·¬¿àÕ½,ÄãÊ§°Ü¶İ×ß,²¢ÇÒËğÊ§ÁËÒ»´ó±ÊÇ®.\n";
+	Diary = fopen("XiuXianDiary.txt", "a");
+	fputs(Description, Diary);
+	//ÓÎÏ·ÄÚÈİ
+	//printf("ÄãÓù½£×¼±¸Ç°ÍùÉ½½ÅÏÂµÄ·»ÊĞ¸ĞÊÜÈË¼äÑÌ»ğ,Í»È»Ò»µÀ·¨ÊõÏ®À´,ÄãÓÎÔÆ°ã¶ã¿ªºó,·¢ÏÖÀ´ÈËÕıÊÇÄãµÄ³ğµĞ!");//²Ù×÷¶ËÏÔÊ¾
+	outtextxy(262, 42 + 200, ("ÄãÓù½£×¼±¸Ç°ÍùÉ½½ÅÏÂµÄ·»ÊĞ¸ĞÊÜÈË¼äÑÌ»ğ,"));
+	outtextxy(262, 42 + 240, ("Í»È»Ò»µÀ·¨ÊõÏ®À´,ÄãÓÎÔÆ°ã¶ã¿ªºó,·¢ÏÖÀ´ÈËÕıÊÇÄãµÄ³ğµĞ!"));
+	if (FightModel(Player, EnemyCreator(Player)) == 1)//Ê¤Àû
+	{
+		Player->Coin += Player->Coin;
+		//printf("Õ½¶·Ê¤Àû!Äã´ò¿ª¶Ô·½µÄ´¢Îï½äÖ¸,·¢ÏÖÁËÒ»´ó±ÊÇ®!");//²Ù×÷¶ËÏÔÊ¾
+		outtextxy(262, 42 + 280, ("Õ½¶·Ê¤Àû!Äã´ò¿ª¶Ô·½µÄ´¢Îï½äÖ¸,·¢ÏÖÁËÒ»´ó±ÊÇ®!"));
 
-        fputs(Description2, Diary);
-        fclose(Diary);
-        return;
-    }
-    if (FightModel(Player, EnemyCreator(Player)) == 0)//Ê§°Ü
-    {
-        Player->Coin = Player->Coin * 0.5;
-        //printf("Õ½¶·Ê§°Ü!ËùĞÒÄãÔø¾­Ñ§¹ıÈıÇ§À×¶¯,µÃÒÔÌÓÀë,È»¶øÈ´ÔÚÕ½¶·ÖĞËğÊ§ÁË×Ô¼ºµÄ´¢Îï½äÖ¸...");//²Ù×÷¶ËÏÔÊ¾
-        outtextxy(262, 42 + 280, ("Õ½¶·Ê§°Ü!ËùĞÒÄãÔø¾­Ñ§¹ıÈıÇ§À×¶¯,"));
-        outtextxy(262, 42 + 320, ("µÃÒÔÌÓÀë,È»¶øÈ´ÔÚÕ½¶·ÖĞËğÊ§ÁË×Ô¼ºµÄ´¢Îï½äÖ¸..."));
-        fputs(Description3, Diary);
-        fclose(Diary);
-        return;
-    }
+		fputs(Description2, Diary);
+		fclose(Diary);
+		return;
+	}
+	if (FightModel(Player, EnemyCreator(Player)) == 0)//Ê§°Ü
+	{
+		Player->Coin = Player->Coin * 0.5;
+		//printf("Õ½¶·Ê§°Ü!ËùĞÒÄãÔø¾­Ñ§¹ıÈıÇ§À×¶¯,µÃÒÔÌÓÀë,È»¶øÈ´ÔÚÕ½¶·ÖĞËğÊ§ÁË×Ô¼ºµÄ´¢Îï½äÖ¸...");//²Ù×÷¶ËÏÔÊ¾
+		outtextxy(262, 42 + 280, ("Õ½¶·Ê§°Ü!ËùĞÒÄãÔø¾­Ñ§¹ıÈıÇ§À×¶¯,"));
+		outtextxy(262, 42 + 320, ("µÃÒÔÌÓÀë,È»¶øÈ´ÔÚÕ½¶·ÖĞËğÊ§ÁË×Ô¼ºµÄ´¢Îï½äÖ¸..."));
+		fputs(Description3, Diary);
+		fclose(Diary);
+		return;
+	}
 }
 
 //--------------------------------------------------//--------------------------------------------------//
 //µ±°´ÏÂÀúÁ·°´Å¥Ê±,Ö»ĞèÒªµ÷ÓÃ¸Ãº¯Êı¼´¿É
 void AdventureMain(struct Player_* Player)
-{    
-    int CaseNumber = RandomDigit(3, 1);
-    switch (CaseNumber) {
-    case 1:AdventureCase_1(Player);//Ö´ĞĞÊÂ¼ş1º¯ÊıÌå     
-        break;//·µ»Ø(ÕâÀï¿ÉÒÔĞİÃß ÈÃ»­ÃæÔİÊ±Í£Ö¹Ò»¶ÎÊ±¼ä?ĞèÒªÄãÉè¼ÆÒ»ÏÂ)
-    case 2:AdventureCase_2(Player);//Ö´ĞĞÊÂ¼ş2º¯ÊıÌå        
-        break;
-    case 3:AdventureCase_3(Player);//Ö´ĞĞÊÂ¼ş3º¯ÊıÌå        
-        break;
-    default:        
-        break;
-    }
-    return;
+{
+	int CaseNumber = RandomDigit(3, 1);
+	switch (CaseNumber) {
+	case 1:AdventureCase_1(Player);//Ö´ĞĞÊÂ¼ş1º¯ÊıÌå     
+		break;//·µ»Ø(ÕâÀï¿ÉÒÔĞİÃß ÈÃ»­ÃæÔİÊ±Í£Ö¹Ò»¶ÎÊ±¼ä?ĞèÒªÄãÉè¼ÆÒ»ÏÂ)
+	case 2:AdventureCase_2(Player);//Ö´ĞĞÊÂ¼ş2º¯ÊıÌå        
+		break;
+	case 3:AdventureCase_3(Player);//Ö´ĞĞÊÂ¼ş3º¯ÊıÌå        
+		break;
+	default:
+		break;
+	}
+	return;
 }
