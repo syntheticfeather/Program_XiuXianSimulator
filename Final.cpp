@@ -5,7 +5,7 @@
 
 void GetName(Player_*);
 Button* MakeButton(int x, int y, int w, int h,
-	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor);
+	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor,bool);
 void DrawButton(Button*);
 void DrawButton(Button*, COLORREF);
 bool IsInButton(Button*, ExMessage);
@@ -29,6 +29,7 @@ void Save_All(Player_*);
 void Load_All(Player_*);
 void Update(Player_*);
 
+bool isclicked = false;
 
 char NameList[20][20] = {
 
@@ -67,27 +68,28 @@ const char BeginText[10][100] = {
 Player_* Player = (Player_*)malloc(sizeof(Player_));
 
 //主点击按钮
-Button* XiuXing = MakeButton(128 - 50, 929, 100, 50, "修炼", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* BagButton = MakeButton(384 - 50, 929, 100, 50, "背包", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* Adventure = MakeButton(640 - 50, 929, 100, 50, "历练", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* ShoppingMall = MakeButton(1024 - 178, 929, 100, 50, "商城", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* ContinueButton = MakeButton(512 - 50, 520, 100, 50, "继续", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* XiuXing = MakeButton(128 - 50, 929, 100, 50, "修炼", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
+Button* BagButton = MakeButton(384 - 50, 929, 100, 50, "背包", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
+Button* Adventure = MakeButton(640 - 50, 929, 100, 50, "历练", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
+Button* ShoppingMall = MakeButton(1024 - 178, 929, 100, 50, "商城", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
+Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
+
+Button* ContinueButton = MakeButton(512 - 50, 520, 100, 50, "继续", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false);
 //显示
-Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
-Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
-Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255));
+Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255),false);
+Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255),false);
+Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255),false);
 //关闭界面按钮
-Button* CloseButton_Bag = MakeButton(720, 50, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* CloseButton_Adven = MakeButton(512 - 50, 600, 100, 40, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
-Button* CloseButton_Shop = MakeButton(512 - 50, 600, 100, 40, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* CloseButton_Bag = MakeButton(720, 50, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false);
+Button* CloseButton_Adven = MakeButton(512 - 50, 600, 100, 40, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false);
+Button* CloseButton_Shop = MakeButton(304, 50, 100, 40, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false);
 //结束按钮
-Button* CloseButton_All = MakeButton(1024 - 90, 10, 70, 35, "保存并退出", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255));
+Button* CloseButton_All = MakeButton(1024 - 90, 10, 70, 35, "保存并退出", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
 Button* MallItem[4] = {
-	MakeButton(512 - 200, 200, 150, 60, "1", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255)),
-	MakeButton(512 + 50, 200, 150, 60, "2", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255)),
-	MakeButton(512 - 200, 300, 150, 60, "3", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255)),
-	MakeButton(512 + 50, 300, 150, 60, "4", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255)),
+	MakeButton(512 - 200, 200, 150, 60, "1", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),
+	MakeButton(512 + 50, 200, 150, 60, "2", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),
+	MakeButton(512 - 200, 300, 150, 60, "3", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false	),
+	MakeButton(512 + 50, 300, 150, 60, "4", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),
 };
 IMAGE imgBK, imgBag, LvlUpUI;
 int main()
@@ -151,24 +153,30 @@ int main()
 			if (isclicked == false && IsClickButton(Adventure, m))
 			{				
 				flushmessage();
+				isclicked = true;
 				GoAdventure(imgBag,Player);
-				CloseButton_Adven->Canclick = true;
 				flushmessage();
+				isclicked = false;
+				CloseButton_Adven->Canclick = true;
+				ContinueButton->Canclick = true;
 			}
-			//战斗继续，continue
-			if (CloseButton_Adven->Canclick == true)
+			//战斗继续，continue	
+			if (isclicked == false && IsClickButton(ContinueButton, m))
 			{
-				if (IsClickButton(ContinueButton, m))
-				{
-					flushmessage();
-					AdventureMain(Player);
-					flushmessage();
-				}
-				//有一个新的按钮
-				//进行下一次事件,待写入
-				//next()
+				flushmessage();
+				isclicked = true;
+				GoAdventure(imgBag, Player);
+				flushmessage();
+				isclicked = false;
 			}
-
+			//结束
+			if (IsClickButton(CloseButton_Adven, m))
+			{
+				putimage(0, 0, &imgBK);
+				CloseButton_Adven->Canclick = false;
+				ContinueButton->Canclick = false;
+				isclicked = false;
+			}
 
 			//商城
 			if (IsClickButton(ShoppingMall, m))
@@ -215,12 +223,7 @@ int main()
 				CloseButton_Bag->Canclick = false;
 
 			}
-			if (IsClickButton(CloseButton_Adven, m))
-			{
-				putimage(0, 0, &imgBK);
-				CloseButton_Adven->Canclick = false;
 
-			}
 			if (IsClickButton(CloseButton_Shop, m))
 			{
 				putimage(0, 0, &imgBK);
@@ -233,9 +236,8 @@ int main()
 				break;
 			}
 			FlushBatchDraw();
-			flushmessage();
+			m.message = 0;
 		}
-
 	}
 	EndBatchDraw();
 	closegraph();
@@ -257,7 +259,7 @@ void GetName(Player_* Player) {
 
 //初始化按钮
 Button* MakeButton(int x, int y, int w, int h,
-	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor)
+	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor,bool Canclick)
 {
 	Button(*btn) = (Button*)malloc(sizeof(Button));
 	//设置按钮
@@ -327,7 +329,6 @@ bool IsInButton(Button* bn, ExMessage m) {
 bool IsClickButton(Button* bn, ExMessage m) {	
 	if (IsInButton(bn, m) && m.message == WM_LBUTTONDOWN)
 	{
-		isclicked = true;
 		if (bn->Canclick == false)
 		{
 			flushmessage();
@@ -586,15 +587,13 @@ void ShowitemInMall() {
 
 //历练框
 void GoAdventure(IMAGE imgBag, Player_* Player) {
-	isclicked = true;
 	int h = imgBag.getheight();//600
 	int w = imgBag.getwidth();//508
 	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);//34
 	//printf("%d\n%d\n", 512 - (w / 2), 512 - (h / 2) - 170);
 	DrawButton(CloseButton_Adven);
-	DrawButton(ContinueButton);
-	flushmessage();	
-	AdventureMain(Player);
+	DrawButton(ContinueButton);	
+	AdventureMain(Player);	
 }
 
 //突破
