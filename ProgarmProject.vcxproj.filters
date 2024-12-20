@@ -27,6 +27,15 @@
     <ClCompile Include="XiuXian.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="contract.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Final.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="BeiBao(1).png">
@@ -37,7 +46,10 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ShoppingMall.h">
+    <ClInclude Include="Adven.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScreen.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

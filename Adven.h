@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef TE
 #define TE
 int RandomDigit(int Range, int Start);
@@ -13,3 +13,4 @@ void AdventureMain(struct Player_* Player);
 
 
 #endif // !TE
+//adventure的头文件

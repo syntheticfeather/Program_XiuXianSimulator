@@ -75,7 +75,6 @@ int FightModel(struct Player_* Player, struct Player_* Enemy)//×¢Òâ´Ë´¦´«ÈëµÄÊÇ½
             //printf("µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,µĞÈË»¹Ê£ÑªÁ¿%.2f!\n", (Player->ATK) * (1 - (Enemy->DF) / (100000 + (Enemy->DF))), EnemyHp);
             outtextxy(262, 42 + 100, ("µĞÈËÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,µĞÈË»¹Ê£ÑªÁ¿%.2f!\n", (Player->ATK) * (1 - (Enemy->DF) / (100000 + (Enemy->DF))), EnemyHp));
             //262,42
-
             //´Ë´¦×¢ÒâĞèÒª¸ü¸ÄÎª²Ù×÷¶ËÏÔÊ¾!!!!!
 
             Attacker = 1;//×ª»»¹¥»÷Õß
@@ -85,7 +84,6 @@ int FightModel(struct Player_* Player, struct Player_* Enemy)//×¢Òâ´Ë´¦´«ÈëµÄÊÇ½
         case 1:PlayerHp -= (Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF)));
             //printf("ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,Äú»¹Ê£ÑªÁ¿%.2f!\n", (Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF))), PlayerHp);
             outtextxy(262, 42 + 200, ("ÄúÊÜµ½ÁË¹¥»÷!±¾´Î¹¥»÷Ôì³É%dµãÉËº¦,Äú»¹Ê£ÑªÁ¿%.2f!\n", (Enemy->ATK) * (1 - (Player->DF) / (100000 + (Player->DF))), PlayerHp));
-
             //´Ë´¦×¢ÒâĞèÒª¸ü¸ÄÎª²Ù×÷¶ËÏÔÊ¾!!!!!
 
             Attacker = 0;//×ª»»¹¥»÷Õß
@@ -195,7 +193,8 @@ void AdventureCase_2(struct Player_* Player) {
     fclose(Diary);
     //ÓÎÏ·ÄÚÈİ
     //printf("ÕıÊÇº®·çÁİÙıÖ®Ê±,ÄãÎªÈ¡Å¯ÎóÈëµØµ×,È´·¢ÏÖ»ğÉ½Éî´¦µÄµØ»ğ,¶¨¾¦Ò»¿´,¾¹ÊÇÑ×µÛÏôÑ×µÄ´«³Ğ!ĞŞÎªÔö¼ÓÊ®·ÖÖ®ËÄ,¹¥»÷ÌáÉı.");//²Ù×÷¶ËÏÔÊ¾
-    outtextxy(262, 42 + 200, ("ÕıÊÇº®·çÁİÙıÖ®Ê±,ÄãÎªÈ¡Å¯ÎóÈëµØµ×,È´·¢ÏÖ»ğÉ½Éî´¦µÄµØ»ğ,¶¨¾¦Ò»¿´,¾¹ÊÇÑ×µÛÏôÑ×µÄ´«³Ğ!ĞŞÎªÔö¼ÓÊ®·ÖÖ®ËÄ,¹¥»÷ÌáÉı."));
+    outtextxy(262, 42 + 200, ("ÕıÊÇº®·çÁİÙıÖ®Ê±,ÄãÎªÈ¡Å¯ÎóÈëµØµ×,È´·¢ÏÖ»ğÉ½Éî´¦µÄµØ»ğ,"));
+    outtextxy(262, 42 + 240, ("¶¨¾¦Ò»¿´,¾¹ÊÇÑ×µÛÏôÑ×µÄ´«³Ğ!ĞŞÎªÔö¼ÓÊ®·ÖÖ®ËÄ,¹¥»÷ÌáÉı."));
     Player->CurExp += Player->CurExp * 0.4;
     Player->ATK += Player->ATK * 0.1;
     return;
@@ -214,11 +213,14 @@ void AdventureCase_3(struct Player_* Player) {
     fputs(Description, Diary);
     //ÓÎÏ·ÄÚÈİ
     //printf("ÄãÓù½£×¼±¸Ç°ÍùÉ½½ÅÏÂµÄ·»ÊĞ¸ĞÊÜÈË¼äÑÌ»ğ,Í»È»Ò»µÀ·¨ÊõÏ®À´,ÄãÓÎÔÆ°ã¶ã¿ªºó,·¢ÏÖÀ´ÈËÕıÊÇÄãµÄ³ğµĞ!");//²Ù×÷¶ËÏÔÊ¾
-    outtextxy(262, 42 + 200, ("ÄãÓù½£×¼±¸Ç°ÍùÉ½½ÅÏÂµÄ·»ÊĞ¸ĞÊÜÈË¼äÑÌ»ğ,Í»È»Ò»µÀ·¨ÊõÏ®À´,ÄãÓÎÔÆ°ã¶ã¿ªºó,·¢ÏÖÀ´ÈËÕıÊÇÄãµÄ³ğµĞ!"));
+    outtextxy(262, 42 + 200, ("ÄãÓù½£×¼±¸Ç°ÍùÉ½½ÅÏÂµÄ·»ÊĞ¸ĞÊÜÈË¼äÑÌ»ğ,"));
+    outtextxy(262, 42 + 240, ("Í»È»Ò»µÀ·¨ÊõÏ®À´,ÄãÓÎÔÆ°ã¶ã¿ªºó,·¢ÏÖÀ´ÈËÕıÊÇÄãµÄ³ğµĞ!"));
     if (FightModel(Player, EnemyCreator(Player)) == 1)//Ê¤Àû
     {
         Player->Coin += Player->Coin;
-        printf("Õ½¶·Ê¤Àû!Äã´ò¿ª¶Ô·½µÄ´¢Îï½äÖ¸,·¢ÏÖÁËÒ»´ó±ÊÇ®!");//²Ù×÷¶ËÏÔÊ¾
+        //printf("Õ½¶·Ê¤Àû!Äã´ò¿ª¶Ô·½µÄ´¢Îï½äÖ¸,·¢ÏÖÁËÒ»´ó±ÊÇ®!");//²Ù×÷¶ËÏÔÊ¾
+        outtextxy(262, 42 + 280, ("Õ½¶·Ê¤Àû!Äã´ò¿ª¶Ô·½µÄ´¢Îï½äÖ¸,·¢ÏÖÁËÒ»´ó±ÊÇ®!"));
+
         fputs(Description2, Diary);
         fclose(Diary);
         return;
@@ -227,7 +229,8 @@ void AdventureCase_3(struct Player_* Player) {
     {
         Player->Coin = Player->Coin * 0.5;
         //printf("Õ½¶·Ê§°Ü!ËùĞÒÄãÔø¾­Ñ§¹ıÈıÇ§À×¶¯,µÃÒÔÌÓÀë,È»¶øÈ´ÔÚÕ½¶·ÖĞËğÊ§ÁË×Ô¼ºµÄ´¢Îï½äÖ¸...");//²Ù×÷¶ËÏÔÊ¾
-        outtextxy(262, 42 + 200, ("Õ½¶·Ê§°Ü!ËùĞÒÄãÔø¾­Ñ§¹ıÈıÇ§À×¶¯,µÃÒÔÌÓÀë,È»¶øÈ´ÔÚÕ½¶·ÖĞËğÊ§ÁË×Ô¼ºµÄ´¢Îï½äÖ¸..."));
+        outtextxy(262, 42 + 280, ("Õ½¶·Ê§°Ü!ËùĞÒÄãÔø¾­Ñ§¹ıÈıÇ§À×¶¯,"));
+        outtextxy(262, 42 + 320, ("µÃÒÔÌÓÀë,È»¶øÈ´ÔÚÕ½¶·ÖĞËğÊ§ÁË×Ô¼ºµÄ´¢Îï½äÖ¸..."));
         fputs(Description3, Diary);
         fclose(Diary);
         return;
@@ -237,16 +240,17 @@ void AdventureCase_3(struct Player_* Player) {
 //--------------------------------------------------//--------------------------------------------------//
 //µ±°´ÏÂÀúÁ·°´Å¥Ê±,Ö»ĞèÒªµ÷ÓÃ¸Ãº¯Êı¼´¿É
 void AdventureMain(struct Player_* Player)
-{
+{    
     int CaseNumber = RandomDigit(3, 1);
     switch (CaseNumber) {
-    case 1:AdventureCase_1(Player);//Ö´ĞĞÊÂ¼ş1º¯ÊıÌå
+    case 1:AdventureCase_1(Player);//Ö´ĞĞÊÂ¼ş1º¯ÊıÌå     
         break;//·µ»Ø(ÕâÀï¿ÉÒÔĞİÃß ÈÃ»­ÃæÔİÊ±Í£Ö¹Ò»¶ÎÊ±¼ä?ĞèÒªÄãÉè¼ÆÒ»ÏÂ)
-    case 2:AdventureCase_2(Player);//Ö´ĞĞÊÂ¼ş2º¯ÊıÌå
+    case 2:AdventureCase_2(Player);//Ö´ĞĞÊÂ¼ş2º¯ÊıÌå        
         break;
-    case 3:AdventureCase_3(Player);//Ö´ĞĞÊÂ¼ş3º¯ÊıÌå
+    case 3:AdventureCase_3(Player);//Ö´ĞĞÊÂ¼ş3º¯ÊıÌå        
         break;
-    default:break;
+    default:        
+        break;
     }
     return;
 }

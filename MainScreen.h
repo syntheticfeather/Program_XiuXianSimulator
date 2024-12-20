@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef TT
 #define TT
 #include<easyx.h>
@@ -17,22 +17,23 @@ struct Player_
 	float HP = 1.0;
 	float ATK = 1.0;
 	float DF = 1.0;
-	int Recovery = 1;//»Ö¸´ÄÜÁ¦(Õ½¶·»ØÑª)
+	int Recovery = 1;//æ¢å¤èƒ½åŠ›(æˆ˜æ–—å›è¡€)
 	int rate = 80;
 	int Lvl = 0;
 	int CurExp = 8;
 	int MaxExp = 10;
+	int ExpSpeed = 0;
 	int Age = 1000;
 	int Coin = 4;
 	char Name[10] = "";
-	struct Weapon* WearingWeapon;//ÎäÆ÷²Û
-	struct Armor* WearingArmor;//·À¾ß²Û
-	struct Decoration* WearingDecoration;//ÊÎÆ·²Û
+	struct Weapon* WearingWeapon;//æ­¦å™¨æ§½
+	struct Armor* WearingArmor;//é˜²å…·æ§½
+	struct Decoration* WearingDecoration;//é¥°å“æ§½
 
 };
 struct Button
 {
-	//×ó£¬ÓÒ£¬ÉÏ£¬ÏÂ
+	//å·¦ï¼Œå³ï¼Œä¸Šï¼Œä¸‹
 	int x = 0;
 	int y = 0;
 	int w = 0;
