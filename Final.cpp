@@ -3,31 +3,7 @@
 #include"Adven.h"
 
 
-void GetName(Player_*);
-Button* MakeButton(int x, int y, int w, int h,
-	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor,bool);
-void DrawButton(Button*);
-void DrawButton(Button*, COLORREF);
-bool IsInButton(Button*, ExMessage);
-bool IsClickButton(Button*, ExMessage);
-void CanLvlUp(Button*, int CurExp, int MaxExp, Player_*);
-void UpdateData(Button*, float HP, float ATK, float DF, int Lvl, char* Name);
-void UpdateCoin_Age(Button*, int Age, int Coin);
-void UpdateExp_Lvl(int CurExp, int MaxExp);
-void Instruction(ExMessage, IMAGE);
-void LvlUpScreen(int);
-//void Click(ExMessage, IMAGE);
-void OpenBag(IMAGE);
-//待完成
-void ShowItemInBag();
-void ShowMall(IMAGE);
-void ShowitemInMall();
-void GoAdventure(IMAGE,Player_*);
-void TuPo(int rate, IMAGE imgBK, Player_*);
-//待完成
-void Save_All(Player_*);
-void Load_All(Player_*);
-void Update(Player_*);
+
 
 bool isclicked = false;
 
@@ -331,8 +307,7 @@ bool IsClickButton(Button* bn, ExMessage m) {
 		{
 			bn->curcolor = bn->incolor;
 			flushmessage();
-		}
-		flushmessage();
+		}	
 		return true;
 	}
 	flushmessage();
