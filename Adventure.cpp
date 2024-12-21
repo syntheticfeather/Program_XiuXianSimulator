@@ -6,6 +6,7 @@
 #include"Adven.h"
 #include"MainScreen.h"
 
+//刷屏标识符，不动
 int FF;
 extern IMAGE imgBag;
 extern Button* CloseButton_Adven;
@@ -124,6 +125,18 @@ int FightModel(struct Player_* Player, struct Player_* Enemy)//注意此处传�
 		}
 		EndBatchDraw();
 		Sleep(1000);
+	}
+	if (i == 2)
+	{
+		putimage(262, 42, &imgBag);//34			
+		if (FF == 3)
+		{
+			outtextxy(262 + 250 - textwidth("你御剑准备前往山脚下的坊市感受人间烟火,") / 2, 42 + 100, "你御剑准备前往山脚下的坊市感受人间烟火,");
+			outtextxy(262 + 250 - textwidth("突然一道法术袭来,你游云般躲开后,发现来人正是你的仇敌!") / 2, 42 + 140, "突然一道法术袭来,你游云般躲开后,发现来人正是你的仇敌!");
+		}
+		DrawButton(CloseButton_Adven);
+		DrawButton(ContinueButton);
+		i = 0;
 	}
 	if (Winner == 0)
 		return 1;
@@ -248,7 +261,8 @@ void AdventureCase_3(struct Player_* Player) {
 	//printf("你御剑准备前往山脚下的坊市感受人间烟火,突然一道法术袭来,你游云般躲开后,发现来人正是你的仇敌!");//操作端显示
 	outtextxy(262 + 250 - textwidth("你御剑准备前往山脚下的坊市感受人间烟火,") / 2, 42 + 100, "你御剑准备前往山脚下的坊市感受人间烟火,");
 	outtextxy(262 + 250 - textwidth("突然一道法术袭来,你游云般躲开后,发现来人正是你的仇敌!") / 2, 42 + 140, "突然一道法术袭来,你游云般躲开后,发现来人正是你的仇敌!");
-	if (FightModel(Player, EnemyCreator(Player)) == 1)//胜利
+	int j = FightModel(Player, EnemyCreator(Player));
+	if (j == 1)//胜利
 	{
 		Player->Coin += Player->Coin;
 		//printf("战斗胜利!你打开对方的储物戒指,发现了一大笔钱!");//操作端显示
@@ -258,7 +272,7 @@ void AdventureCase_3(struct Player_* Player) {
 		fclose(Diary);
 		return;
 	}
-	if (FightModel(Player, EnemyCreator(Player)) == 0)//失败
+	if (j == 0)//失败
 	{
 		Player->Coin = Player->Coin * 0.5;
 		//printf("战斗失败!所幸你曾经学过三千雷动,得以逃离,然而却在战斗中损失了自己的储物戒指...");//操作端显示
