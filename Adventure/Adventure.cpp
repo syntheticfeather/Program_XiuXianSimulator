@@ -6,6 +6,7 @@
 #include"Adven.h"
 #include"MainScreen.h"
 
+
 //刷屏标识符，不动
 int FF;
 extern IMAGE imgBag;
