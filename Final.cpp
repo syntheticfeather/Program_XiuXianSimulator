@@ -42,36 +42,122 @@ const char BeginText[10][100] = {
 };
 
 Player_* Player = (Player_*)malloc(sizeof(Player_));
+Node* HeadNode;
 
 //主点击按钮
-Button* XiuXing = MakeButton(128 - 50, 929, 100, 50, "修炼", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
-Button* BagButton = MakeButton(384 - 50, 929, 100, 50, "背包", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
-Button* Adventure = MakeButton(640 - 50, 929, 100, 50, "历练", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
-Button* ShoppingMall = MakeButton(1024 - 178, 929, 100, 50, "商城", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
-Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
+Button* XiuXing = MakeButton(128 - 50, 929, 100, 50, "修炼", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), true);
+Button* BagButton = MakeButton(384 - 50, 929, 100, 50, "背包", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), true);
+Button* Adventure = MakeButton(640 - 50, 929, 100, 50, "历练", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), true);
+Button* ShoppingMall = MakeButton(1024 - 178, 929, 100, 50, "商城", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), true);
+Button* LvlUpButton = MakeButton(512 - 50, 700, 100, 50, "突破", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), true);
 
-Button* ContinueButton = MakeButton(512 - 50, 520, 100, 50, "继续", RGB(255, 166, 87), RGB(255, 166, 87), RGB(255, 166, 87),false);
+Button* ContinueButton = MakeButton(512 - 50, 520, 100, 50, "继续", RGB(255, 166, 87), RGB(255, 166, 87), RGB(255, 166, 87), false);
 //显示
-Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255),false);
-Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255),false);
-Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255),false);
+Button* DataButton = MakeButton(50, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255), false);
+Button* AgeCoinButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255), false);
+Button* NameButton = MakeButton(1024 - 150, 50, 100, 125, "", RGB(137, 207, 240), RGB(255, 222, 146), RGB(30, 144, 255), false);
 //关闭界面按钮
-Button* CloseButton_Bag = MakeButton(720, 50, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false);
-Button* CloseButton_Adven = MakeButton(512 - 50, 600, 100, 40, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false);
-Button* CloseButton_Shop = MakeButton(304, 50, 100, 40, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false);
-//结束按钮
-Button* CloseButton_All = MakeButton(1024 - 90, 10, 70, 35, "保存并退出", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),true);
-Button* MallItem[4] = {
-	MakeButton(512 - 200, 200, 150, 60, "1", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),
-	MakeButton(512 + 50, 200, 150, 60, "2", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),
-	MakeButton(512 - 200, 300, 150, 60, "3", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false	),
-	MakeButton(512 + 50, 300, 150, 60, "4", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),
+Button* CloseButton_Bag = MakeButton(720, 50, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), false);
+Button* CloseButton_Adven = MakeButton(512 - 50, 600, 100, 40, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), false);
+Button* CloseButton_Shop = MakeButton(269, 50, 35, 35, "关闭", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), false);
+//结束按钮k
+//结束按钮k
+Button* CloseButton_All = MakeButton(1024 - 90, 10, 70, 35, "保存并退出", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), true);
+Button* MallItemButton[4] = {
+	MakeButton(512 - 200, 200, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//武器
+	MakeButton(512 + 50, 200, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//防具
+	MakeButton(512 - 200, 400, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//饰品
+	MakeButton(512 + 50, 400, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//丹药
 };
+Weapon* WeaponInMall;
+Armor* ArmorInMall;
+Decoration* DecorationInMall;
+ELIXIR* ELIXIRInMall;
 IMAGE imgBK, imgBag, LvlUpUI;
+
+
+// 支付函数：尝试购买商品并从玩家的钱包中扣款
+void buyItem(Player_* player, int Type) {
+	// 根据节点类型打印不同格式的信息
+	switch (Type) 
+	{
+	case TYPE_WEAPON:
+		// 检查玩家是否有足够的金币来购买此物品
+		if (player->Coin < WeaponInMall->Coin) {
+			printf("买不起");
+		}
+		else
+		{
+			// 从玩家的金币中扣除相应的金额
+			player->Coin -= WeaponInMall->Coin;
+			Node* TempNode = createNode(TYPE_WEAPON);
+			TempNode->item.weapon = *WeaponInMall;
+			insertAtHead(&HeadNode, TempNode);
+			printf("购买成功");
+			DrawButton(MallItemButton[Type]);
+			WeaponInMall = CreateWeapon(Player);
+
+		}
+		break;
+	case TYPE_ARMOR:
+		// 检查玩家是否有足够的金币来购买此物品
+		if (player->Coin < ArmorInMall->Coin) {
+			printf("买不起");
+		}
+		else
+		{
+			// 从玩家的金币中扣除相应的金额
+			player->Coin -= ArmorInMall->Coin;
+			Node* TempNode = createNode(TYPE_ARMOR);
+			TempNode->item.armor = *ArmorInMall;
+			insertAtHead(&HeadNode, TempNode);			
+			printf("购买成功");
+			DrawButton(MallItemButton[Type]);
+			ArmorInMall = CreatArmor(Player);
+		}
+		break;
+	case TYPE_DECORATION:
+		// 检查玩家是否有足够的金币来购买此物品
+		if (player->Coin < DecorationInMall->Coin) {
+			printf("买不起");
+		}
+		else
+		{
+			// 从玩家的金币中扣除相应的金额
+			player->Coin -= DecorationInMall->Coin;
+			Node* TempNode = createNode(TYPE_DECORATION);
+			TempNode->item.decoration = *DecorationInMall;
+			insertAtHead(&HeadNode, TempNode);
+			printf("购买成功");
+			DrawButton(MallItemButton[Type]);
+			DecorationInMall = CreateDecoration(Player);
+		}
+		break;
+	case TYPE_ELIXIR:
+		// 检查玩家是否有足够的金币来购买此物品
+		if (player->Coin < ELIXIRInMall->Coin) {
+			printf("买不起");
+		}
+		else
+		{
+			// 从玩家的金币中扣除相应的金额
+			player->Coin -= ELIXIRInMall->Coin;
+			Node* TempNode = createNode(TYPE_DECORATION);
+			TempNode->item.elixir = *ELIXIRInMall;
+			insertAtHead(&HeadNode, TempNode);
+			printf("购买成功");
+			DrawButton(MallItemButton[Type]);
+			ELIXIRInMall = CreateElixir(Player);
+		}
+		break;
+	}
+}
+
 int main()
 {
 	//加载数据
-	Load_All(Player);
+	Load_All(Player,&HeadNode);
+
 	//生成随机名字
 	GetName(Player);
 	//创建主窗口
@@ -107,10 +193,9 @@ int main()
 		//经验条
 		setfillcolor(RGB(0, 0, 0));
 		fillroundrect(200, 765, 824, 785, 20, 10);
-		
+
 		//更新数据
 		Update(Player);
-
 		while (peekmessage(&m, EX_MOUSE));
 		{
 			if (IsClickButton(XiuXing, m))
@@ -126,14 +211,14 @@ int main()
 				CloseButton_Bag->Canclick = true;
 			}
 			//历练
-			if ( IsClickButton(Adventure, m))
-			{				
-				GoAdventure(imgBag,Player);
+			if (IsClickButton(Adventure, m))
+			{
+				GoAdventure(imgBag, Player);
 				CloseButton_Adven->Canclick = true;
 				ContinueButton->Canclick = true;
 			}
 			//战斗继续，continue	
-			if (IsClickButton(ContinueButton, m))
+			if (ContinueButton->Canclick == true && IsClickButton(ContinueButton, m))
 			{
 				GoAdventure(imgBag, Player);
 			}
@@ -142,7 +227,7 @@ int main()
 			{
 				putimage(0, 0, &imgBK);
 				CloseButton_Adven->Canclick = false;
-				ContinueButton->Canclick = false;			
+				ContinueButton->Canclick = false;
 			}
 
 			//商城
@@ -151,23 +236,21 @@ int main()
 				ShowMall(imgBag);
 				CloseButton_Shop->Canclick = true;
 			}
-
-
 			//突破
 			if (IsClickButton(LvlUpButton, m))
 			{
-				TuPo(Player->rate, imgBK,Player);
+				TuPo(Player->rate, imgBK, Player);
 			}
-
-
 			//商店购买东西
 			if (CloseButton_Shop->Canclick == true)
 			{
 				for (int i = 0; i < 4; i++)
 				{
-					if (IsClickButton(MallItem[i], m))
+					if (IsClickButton(MallItemButton[i], m))
 					{
+						buyItem(Player, i);
 						printf("被点击了");
+						MallItemButton[i]->Canclick = false;
 					}
 				}
 			}
@@ -177,8 +260,9 @@ int main()
 				//判断是否点击
 				for (int i = 0; i < 4; i++)
 				{
-					if (IsClickButton(MallItem[i], m))
+					if (IsClickButton(MallItemButton[i], m))
 					{
+
 						printf("被点击了");
 					}
 				}
@@ -195,11 +279,15 @@ int main()
 			{
 				putimage(0, 0, &imgBK);
 				CloseButton_Shop->Canclick = false;
+				for (int i = 0; i < 4; i++)
+				{
+					MallItemButton[i]->Canclick = true;
+				}
 			}
 			//退出并保存
 			if (IsClickButton(CloseButton_All, m))
 			{
-				Save_All(Player);
+				Save_All(Player,HeadNode);
 				break;
 			}
 			FlushBatchDraw();
@@ -208,7 +296,6 @@ int main()
 	}
 	EndBatchDraw();
 	closegraph();
-
 	return 0;
 }
 
@@ -217,16 +304,15 @@ int main()
 
 //初始化姓名
 void GetName(Player_* Player) {
-	if (Player->Name == NULL)
+	if (Player->IsBeginner)
 	{
 		srand((unsigned int)time(NULL));
 		strcpy(Player->Name, NameList[rand() % 20]);
 	}
 }
-
 //初始化按钮
 Button* MakeButton(int x, int y, int w, int h,
-	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor,bool Canclick)
+	const char* Text, COLORREF incolor, COLORREF outcolor, COLORREF ClickColor, bool Canclick)
 {
 	Button(*btn) = (Button*)malloc(sizeof(Button));
 	//设置按钮
@@ -293,24 +379,17 @@ bool IsInButton(Button* bn, ExMessage m) {
 }
 
 //按钮点击判断，点击颜色变化
-bool IsClickButton(Button* bn, ExMessage m) {	
-	if (IsInButton(bn, m) && m.message == WM_LBUTTONDOWN)
+bool IsClickButton(Button* bn, ExMessage m) {
+	if (IsInButton(bn, m) && bn->Canclick != false && m.message == WM_LBUTTONDOWN)
 	{
-		if (bn->Canclick == false)
-		{
-			flushmessage();
-			return false;
-		}
+		peekmessage(&m);
 		bn->curcolor = bn->ClickColor;
-		FlushBatchDraw();
 		if (m.message == WM_LBUTTONUP)
 		{
 			bn->curcolor = bn->incolor;
-			flushmessage();
-		}	
+		}
 		return true;
 	}
-	flushmessage();
 	return false;
 }
 
@@ -543,11 +622,71 @@ void ShowMall(IMAGE imgBag) {
 	ShowitemInMall();
 
 }
-
+//Button* MallItemButton[4] = {
+//	MakeButton(512 - 200, 200, 150, 90, "1", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false,0),//武器
+//	MakeButton(512 + 50, 200, 150, 90, "2", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false,1),//防具
+//	MakeButton(512 - 200, 350, 150, 90, "3", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false,2),//饰品
+//	MakeButton(512 + 50, 350, 150, 90, "4", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false,3),//丹药
+//};
 void ShowitemInMall() {
 	for (int i = 0; i < 4; i++)
 	{
-		DrawButton(MallItem[i]);
+		DrawButton(MallItemButton[i]);
+		switch (i)
+		{
+		case TYPE_WEAPON:
+			outtextxy(380,200,"武器");//中点-7
+			char text1[20];
+			sprintf(text1, "%d", (int)WeaponInMall->ATK);
+			outtextxy(312 + 30,230,"攻击:");
+			outtextxy(312 + 30 + textwidth("攻击:"), 230, text1);
+			char text2[20];
+			sprintf(text2, "%d", WeaponInMall->Coin);
+			outtextxy(312 + 30,260,"价格:");
+			outtextxy(312 + 30 + textwidth("价格:"), 260, text2);			
+			break;
+		case TYPE_ARMOR:
+			outtextxy(630, 200, "防具");
+			char text3[20];
+			sprintf(text3, "%d", (int)ArmorInMall->HP);
+			outtextxy(562 + 30, 230, "血量:");
+			outtextxy(562 + 30 + textwidth("血量:"), 230, text3);
+			char text4[20];
+			sprintf(text4, "%d", (int)ArmorInMall->DF);
+			outtextxy(562 + 30, 260, "防御:");
+			outtextxy(562 + 30 + textwidth("防御:"), 260, text4);
+			char text5[20];
+			sprintf(text5, "%d", ArmorInMall->Coin);
+			outtextxy(562 + 30, 290, "价格:");
+			outtextxy(562 + 30 + textwidth("价格:"), 290, text5);
+			break;
+		case TYPE_DECORATION:
+			outtextxy(380, 400, "饰品");//中点-7
+			char text6[20];
+			sprintf(text6, "%d", (int)DecorationInMall->ATK);
+			outtextxy(312 + 30, 430, "攻击:");
+			outtextxy(312 + 30 + textwidth("攻击:"), 430, text6);
+			char text7[20];
+			sprintf(text7, "%d", (int)DecorationInMall->HP);
+			outtextxy(312 + 30, 460, "血量:");
+			outtextxy(312 + 30 + textwidth("血量:"), 460, text7);
+			char text8[20];
+			sprintf(text8, "%d", (int)DecorationInMall->DF);
+			outtextxy(312 + 30, 490, "防御:");
+			outtextxy(312 + 30 + textwidth("防御:"), 490, text8);
+			char text9[20];
+			sprintf(text9, "%d", DecorationInMall->Coin);
+			outtextxy(312 + 30, 520, "价格:");
+			outtextxy(312 + 30 + textwidth("价格:"), 520, text9);
+			break;
+		case TYPE_ELIXIR:
+			outtextxy(630, 400, "丹药");//中点-7
+			char text10[20];
+			sprintf(text10, "%d", (int)ELIXIRInMall->rate);
+			outtextxy(562 + 30, 430, "增加突破概率:");
+			outtextxy(562 + 30 + textwidth("增加突破概率:"), 430, text10);
+			break;
+		}
 	}
 }
 
@@ -558,35 +697,57 @@ void GoAdventure(IMAGE imgBag, Player_* Player) {
 	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);//34
 	//printf("%d\n%d\n", 512 - (w / 2), 512 - (h / 2) - 170);
 	DrawButton(CloseButton_Adven);
-	DrawButton(ContinueButton);	
-	AdventureMain(Player);	
+	DrawButton(ContinueButton);
+	AdventureMain(Player);
 }
 
 //突破
 //////////////////////更新 
-void TuPo(int rate, IMAGE imgBK, Player_* Player) {
-	flushmessage(); 
-	if (Player->Lvl < 70)
-	{
-		Player->Lvl += 1;
-		Player->CurExp -= Player->MaxExp;
-	}
-	putimage(0, 0, &imgBK);
-}
+//void TuPo(int rate, IMAGE imgBK, Player_* Player) {
+//	flushmessage();
+//	if (Player->Lvl < 70)
+//	{
+//		Player->Lvl += 1;
+//		Player->CurExp -= Player->MaxExp;
+//	}
+//	putimage(0, 0, &imgBK);
+//}
 //////////////////////
+//突破时调用突破函数
 
+
+void TuPo(int rate, IMAGE imgBK, Player_* Player_1)//突破
+{
+	int A = RandomDigit(100, 1);//生成随机数
+	Player_1->CurExp = Player_1->CurExp - Player_1->MaxExp;//点击突破消耗经验
+	if (A <= Player_1->rate)//随机数与成功率比较
+	{
+		Player_1->Lvl++;//升级
+		Player_1->MaxExp = Player_1->MaxExp * 1.5 + 5;//经验上限增加
+		Player_1->HP = (Player_1->HP + 2) * 1.2;//血量增加
+		Player_1->ATK = (Player_1->ATK + 2) * 1.2;//攻击增加
+		Player_1->DF = (Player_1->DF + 2) * 1.2;//防御增加
+		Player_1->rate = Player_1->rate - 1.4;//突破成功率减少
+		Player_1->ExpSpeed = 1 + Player_1->Lvl * 1.3;//经验增长速度增加		
+	}
+	else
+	{
+		outtextxy(512, 512, "失败！");
+	}	
+}
 
 
 //保存
 //保存是否是新手，三维，概率，等级，经验值，最大经验值，年龄，金币，姓名，
 // 装备信息
-void Save_All(Player_* Player) {
+void Save_All(Player_* Player, Node* HeadNode) {
 	FILE* file = fopen("data.txt", "w");
 	fprintf(file, "%d %f %f %f %d %d %d %d %d %d %d %s",
 		Player->IsBeginner, Player->HP, Player->ATK, Player->DF,
 		Player->rate, Player->Lvl, Player->CurExp, Player->MaxExp,
 		Player->Age, Player->Coin, Player->Recovery, Player->Name);
 	fclose(file);
+	Save_NodeList(HeadNode);
 	//以及装备背包保存
 	/////
 	//
@@ -595,22 +756,35 @@ void Save_All(Player_* Player) {
 
 //读取数据
 //装备信息
-void Load_All(Player_* Player) {
+void Load_All(Player_* Player, Node** HeadNode) {
 	FILE* file = fopen("data.txt", "r");
 	fscanf(file, "%d %f %f %f %d %d %d %d %d %d %d %s",
 		&Player->IsBeginner, &Player->HP, &Player->ATK, &Player->DF,
 		&Player->rate, &Player->Lvl, &Player->CurExp, &Player->MaxExp,
 		&Player->Age, &Player->Coin, &Player->Recovery, &Player->Name);
 	fclose(file);
+	Load_Nodes(HeadNode);
+	initMall();
 	//以及装备背包读取
 	/////
 	//
 	/////
 }
+void initMall()
+{
+	WeaponInMall = CreateWeapon(Player);
+	ArmorInMall = CreatArmor(Player);
+	DecorationInMall = CreateDecoration(Player);
+	ELIXIRInMall = CreateElixir(Player);
+}
 void Update(Player_* Player) {
 	UpdateExp_Lvl(Player->CurExp, Player->MaxExp);
 	UpdateData(DataButton, Player->HP, Player->ATK, Player->DF, Player->Lvl, Player->Name);
-	CanLvlUp(LvlUpButton, Player->CurExp, Player->MaxExp,Player);
+	CanLvlUp(LvlUpButton, Player->CurExp, Player->MaxExp, Player);
 	UpdateCoin_Age(AgeCoinButton, Player->Age, Player->Coin);
 	LvlUpScreen(Player->rate);
+	if (Player->rate >= 100)
+	{
+		Player->rate = 100;
+	}
 }
