@@ -76,82 +76,7 @@ ELIXIR* ELIXIRInMall;
 IMAGE imgBK, imgBag, LvlUpUI;
 
 
-// 支付函数：尝试购买商品并从玩家的钱包中扣款
-void buyItem(Player_* player, int Type) {
-	// 根据节点类型打印不同格式的信息
-	switch (Type) 
-	{
-	case TYPE_WEAPON:
-		// 检查玩家是否有足够的金币来购买此物品
-		if (player->Coin < WeaponInMall->Coin) {
-			printf("买不起");
-		}
-		else
-		{
-			// 从玩家的金币中扣除相应的金额
-			player->Coin -= WeaponInMall->Coin;
-			Node* TempNode = createNode(TYPE_WEAPON);
-			TempNode->item.weapon = *WeaponInMall;
-			insertAtHead(&HeadNode, TempNode);
-			printf("购买成功");
-			DrawButton(MallItemButton[Type]);
-			WeaponInMall = CreateWeapon(Player);
 
-		}
-		break;
-	case TYPE_ARMOR:
-		// 检查玩家是否有足够的金币来购买此物品
-		if (player->Coin < ArmorInMall->Coin) {
-			printf("买不起");
-		}
-		else
-		{
-			// 从玩家的金币中扣除相应的金额
-			player->Coin -= ArmorInMall->Coin;
-			Node* TempNode = createNode(TYPE_ARMOR);
-			TempNode->item.armor = *ArmorInMall;
-			insertAtHead(&HeadNode, TempNode);			
-			printf("购买成功");
-			DrawButton(MallItemButton[Type]);
-			ArmorInMall = CreatArmor(Player);
-		}
-		break;
-	case TYPE_DECORATION:
-		// 检查玩家是否有足够的金币来购买此物品
-		if (player->Coin < DecorationInMall->Coin) {
-			printf("买不起");
-		}
-		else
-		{
-			// 从玩家的金币中扣除相应的金额
-			player->Coin -= DecorationInMall->Coin;
-			Node* TempNode = createNode(TYPE_DECORATION);
-			TempNode->item.decoration = *DecorationInMall;
-			insertAtHead(&HeadNode, TempNode);
-			printf("购买成功");
-			DrawButton(MallItemButton[Type]);
-			DecorationInMall = CreateDecoration(Player);
-		}
-		break;
-	case TYPE_ELIXIR:
-		// 检查玩家是否有足够的金币来购买此物品
-		if (player->Coin < ELIXIRInMall->Coin) {
-			printf("买不起");
-		}
-		else
-		{
-			// 从玩家的金币中扣除相应的金额
-			player->Coin -= ELIXIRInMall->Coin;
-			Node* TempNode = createNode(TYPE_DECORATION);
-			TempNode->item.elixir = *ELIXIRInMall;
-			insertAtHead(&HeadNode, TempNode);
-			printf("购买成功");
-			DrawButton(MallItemButton[Type]);
-			ELIXIRInMall = CreateElixir(Player);
-		}
-		break;
-	}
-}
 
 int main()
 {
@@ -763,6 +688,16 @@ void Load_All(Player_* Player, Node** HeadNode) {
 		&Player->rate, &Player->Lvl, &Player->CurExp, &Player->MaxExp,
 		&Player->Age, &Player->Coin, &Player->Recovery, &Player->Name);
 	fclose(file);
+	if (Player->IsBeginner = 1)
+	{
+		FILE* file = fopen("Bag.txt", "w");
+		if (file == NULL)
+		{
+			return;
+		}
+		fprintf(file, "0 %f %d\n", 2.0, 5);
+		fclose(file);
+	}
 	Load_Nodes(HeadNode);
 	initMall();
 	//以及装备背包读取
@@ -786,5 +721,79 @@ void Update(Player_* Player) {
 	if (Player->rate >= 100)
 	{
 		Player->rate = 100;
+	}
+}
+// 支付函数：尝试购买商品并从玩家的钱包中扣款
+void buyItem(Player_* player, int Type) {
+	// 根据节点类型打印不同格式的信息
+	switch (Type)
+	{
+	case TYPE_WEAPON:
+		// 检查玩家是否有足够的金币来购买此物品
+		if (player->Coin < WeaponInMall->Coin) {			
+		}
+		else
+		{
+			// 从玩家的金币中扣除相应的金额
+			player->Coin -= WeaponInMall->Coin;
+			Node* TempNode = createNode(TYPE_WEAPON);
+			TempNode->item.weapon = *WeaponInMall;
+			TempNode->Type = TYPE_WEAPON;
+			insertAtHead(&HeadNode, TempNode);			
+			DrawButton(MallItemButton[Type]);
+			WeaponInMall = CreateWeapon(Player);
+		}
+		break;
+	case TYPE_ARMOR:
+		// 检查玩家是否有足够的金币来购买此物品
+		if (player->Coin < ArmorInMall->Coin) {
+			
+		}
+		else
+		{
+			// 从玩家的金币中扣除相应的金额
+			player->Coin -= ArmorInMall->Coin;
+			Node* TempNode = createNode(TYPE_ARMOR);
+			TempNode->item.armor = *ArmorInMall;
+			TempNode->Type = TYPE_ARMOR;
+			insertAtHead(&HeadNode, TempNode);			
+			DrawButton(MallItemButton[Type]);
+			ArmorInMall = CreatArmor(Player);
+		}
+		break;
+	case TYPE_DECORATION:
+		// 检查玩家是否有足够的金币来购买此物品
+		if (player->Coin < DecorationInMall->Coin) {
+			
+		}
+		else
+		{
+			// 从玩家的金币中扣除相应的金额
+			player->Coin -= DecorationInMall->Coin;
+			Node* TempNode = createNode(TYPE_DECORATION);
+			TempNode->item.decoration = *DecorationInMall;
+			TempNode->Type = TYPE_DECORATION;
+			insertAtHead(&HeadNode, TempNode);			
+			DrawButton(MallItemButton[Type]);
+			DecorationInMall = CreateDecoration(Player);
+		}
+		break;
+	case TYPE_ELIXIR:
+		// 检查玩家是否有足够的金币来购买此物品
+		if (player->Coin < ELIXIRInMall->Coin) {
+			
+		}
+		else
+		{
+			// 从玩家的金币中扣除相应的金额
+			player->Coin -= ELIXIRInMall->Coin;
+			Node* TempNode = createNode(TYPE_ELIXIR);
+			TempNode->item.elixir = *ELIXIRInMall;
+			TempNode->Type = TYPE_ELIXIR;
+			insertAtHead(&HeadNode, TempNode);			
+			DrawButton(MallItemButton[Type]);
+			ELIXIRInMall = CreateElixir(Player);
+		}
+		break;
 	}
 }
