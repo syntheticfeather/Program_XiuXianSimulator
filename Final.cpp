@@ -6,6 +6,7 @@
 
 
 bool isclicked = false;
+int Page = 0;
 
 char NameList[20][20] = {
 
@@ -69,6 +70,14 @@ Button* MallItemButton[4] = {
 	MakeButton(512 - 200, 400, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//饰品
 	MakeButton(512 + 50, 400, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//丹药
 };
+
+Button* BagButtons[4]
+{
+	MakeButton(512 - 200, 200, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//武器
+	MakeButton(512 + 50, 200, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//防具
+	MakeButton(512 - 200, 400, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//饰品
+	MakeButton(512 + 50, 400, 150, 150, "", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255),false),//丹药
+};
 Weapon* WeaponInMall;
 Armor* ArmorInMall;
 Decoration* DecorationInMall;
@@ -100,7 +109,7 @@ int main()
 
 	setfillcolor(RGB(0, 0, 0));
 	fillroundrect(200, 765, 824, 785, 20, 10);
-
+	Node* Test = TurnToNode(HeadNode,1);
 	//获取鼠标消息
 	//开始
 	BeginBatchDraw();
@@ -132,7 +141,7 @@ int main()
 			}
 			if (IsClickButton(BagButton, m))
 			{
-				OpenBag(imgBag);
+				OpenBag(imgBag,HeadNode);
 				CloseButton_Bag->Canclick = true;
 			}
 			//历练
@@ -185,9 +194,9 @@ int main()
 				//判断是否点击
 				for (int i = 0; i < 4; i++)
 				{
-					if (IsClickButton(MallItemButton[i], m))
+					if (IsClickButton(BagButtons[i], m))
 					{
-
+						Node* TarNode = TurnToNode(HeadNode,Page+i);
 						printf("被点击了");
 					}
 				}
@@ -512,7 +521,7 @@ void LvlUpScreen(int rate) {
 //}
 
 //背包装备显示
-void OpenBag(IMAGE imgBag) {
+void OpenBag(IMAGE imgBag, Node* HeadNode) {
 	//主体框架
 	int h = imgBag.getheight();
 	int w = imgBag.getwidth();
@@ -527,15 +536,89 @@ void OpenBag(IMAGE imgBag) {
 	int textw = textwidth(text);
 	int xx = 512 - (textw / 2);
 	outtextxy(xx, 512 - 470, text);
-	ShowItemInBag();
+	for (int i = 0; i < 4; i++)
+	{
+		DrawButton(BagButtons[i]);
+	}
+	ShowItemInBag(HeadNode);
 }
 
 //显示装备
-void ShowItemInBag() {
-	//while (Node != NULL)
-	//{
-
-	//}
+void ShowItemInBag(Node* HeadNode) {
+	for (int i = 0 + (Page * 4); i < (Page + 1) * 4; i++)
+	{
+		Node* Cur = HeadNode->next;
+		for (int j = 0; j < i; j++)
+		{
+			Cur = Cur->next;
+		}
+		int x, y;
+		if (i % 4 == 0)
+		{
+			x = 312;
+			y = 230;
+		}
+		else if (i%4 == 1)
+		{
+			x = 562;
+			y = 230;
+		}
+		else if (i % 4 == 2)
+		{
+			x = 312;
+			y = 430;
+		}
+		else
+		{
+			x = 562;
+			y = 430;
+		}
+		switch (Cur->Type)
+		{
+		case TYPE_WEAPON:
+			outtextxy(x + 75 -7, y-30, "武器");//中点-7
+			char text1[20];
+			sprintf(text1, "%d", (int)Cur->item.weapon.ATK);
+			outtextxy(x + 30, y, "攻击:");
+			outtextxy(x + 30 + textwidth("攻击:"), y, text1);
+			break;
+		case TYPE_ARMOR:
+			outtextxy(x + 68, y-30, "防具");
+			char text3[20];
+			sprintf(text3, "%d", (int)Cur->item.armor.HP);
+			outtextxy(x + 30, y, "血量:");
+			outtextxy(x + 30 + textwidth("血量:"), y, text3);
+			char text4[20];
+			sprintf(text4, "%d", (int)Cur->item.armor.DF);
+			outtextxy(x + 30, y+30, "防御:");
+			outtextxy(x + 30 + textwidth("防御:"), y+30, text4);
+			break;
+		case TYPE_DECORATION:
+			outtextxy(x + 68, y-30, "饰品");//中点-7
+			char text6[20];
+			sprintf(text6, "%d", (int)Cur->item.decoration.ATK);
+			outtextxy(x + 30, y, "攻击:");
+			outtextxy(x + 30 + textwidth("攻击:"), y, text6);
+			char text7[20];
+			sprintf(text7, "%d", (int)Cur->item.decoration.HP);
+			outtextxy(x + 30, y+30, "血量:");
+			outtextxy(x + 30 + textwidth("血量:"), y+30, text7);
+			char text8[20];
+			sprintf(text8, "%d", (int)Cur->item.decoration.DF);
+			outtextxy(x + 30, y+60, "防御:");
+			outtextxy(x + 30 + textwidth("防御:"), y+60, text8);
+			break;
+		case TYPE_ELIXIR:
+			outtextxy(x + 68, y-30, "丹药");//中点-7
+			char text10[20];
+			sprintf(text10, "%d", (int)Cur->item.elixir.rate);
+			outtextxy(x + 30, y, "增加突破概率:");
+			outtextxy(x + 30 + textwidth("增加突破概率:"), y, text10);
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 //商城界面
@@ -557,6 +640,7 @@ void ShowitemInMall() {
 	for (int i = 0; i < 4; i++)
 	{
 		DrawButton(MallItemButton[i]);
+
 		switch (i)
 		{
 		case TYPE_WEAPON:
@@ -625,21 +709,6 @@ void GoAdventure(IMAGE imgBag, Player_* Player) {
 	DrawButton(ContinueButton);
 	AdventureMain(Player);
 }
-
-//突破
-//////////////////////更新 
-//void TuPo(int rate, IMAGE imgBK, Player_* Player) {
-//	flushmessage();
-//	if (Player->Lvl < 70)
-//	{
-//		Player->Lvl += 1;
-//		Player->CurExp -= Player->MaxExp;
-//	}
-//	putimage(0, 0, &imgBK);
-//}
-//////////////////////
-//突破时调用突破函数
-
 
 void TuPo(int rate, IMAGE imgBK, Player_* Player_1)//突破
 {
@@ -796,4 +865,14 @@ void buyItem(Player_* player, int Type) {
 		}
 		break;
 	}
+}
+
+Node* TurnToNode(Node * HeadNode, int num)
+{
+	Node* Cur = HeadNode;
+	for (int i = 0; i < num+1; i++)
+	{
+		Cur = Cur->next;
+	}
+	return Cur;
 }

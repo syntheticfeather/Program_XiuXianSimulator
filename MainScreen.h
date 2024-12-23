@@ -59,9 +59,9 @@ void UpdateExp_Lvl(int CurExp, int MaxExp);
 void Instruction(ExMessage, IMAGE);
 void LvlUpScreen(int);
 //void Click(ExMessage, IMAGE);
-void OpenBag(IMAGE);
+void OpenBag(IMAGE, Node* HeadNode);
 //待完成
-void ShowItemInBag();
+void ShowItemInBag(Node* HeadNode);
 void ShowMall(IMAGE);
 void ShowitemInMall();
 void GoAdventure(IMAGE, Player_*);
@@ -72,5 +72,6 @@ void Save_All(Player_*,Node*);
 void Load_All(Player_*,Node**);
 void Update(Player_*);
 void buyItem(Player_* player, int Type);
+Node* TurnToNode(Node* HeadNode, int num);
 
 #endif // !TT

@@ -50,8 +50,16 @@ void insertAtHead(Node** L, Node* item)
     new_node->item = item->item;
     new_node->Type = item->Type;
     new_node->next = NULL;
-    new_node->next = *L; // 新节点的next指向当前链表的第一个节点
-    *L = new_node; // 更新链表头的下一节点指向新节点
+    if ((*L)->next == NULL) {
+        (*L)->next = new_node; // 如果链表为空
+    }
+    else {
+        Node* current = *L;
+        while (current->next != NULL) {
+            current = current->next; // 移动到下一个节点
+        }
+        current->next = new_node; // 将新节点插入到链表末尾
+    }
 }
 
 //// ------------------------------------------------------------------------------------------------------------------------------------------------ -
