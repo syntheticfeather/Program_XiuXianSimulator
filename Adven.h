@@ -1,6 +1,7 @@
 ﻿#pragma once
 #ifndef TE
 #define TE
+
 int RandomDigit(int Range, int Start);
 int FightModel(struct Player_* Player, struct Player_* Enemy);
 int Calculator(int Level, int CheckAspect);

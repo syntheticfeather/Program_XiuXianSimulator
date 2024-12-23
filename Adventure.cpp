@@ -32,22 +32,6 @@ extern Button* ContinueButton;
 //    struct Decoration* WearingDecoration;//饰品槽
 //
 //};
-struct Weapon {
-	int Attack;
-	int Money;
-};
-struct Armor {
-	int HP;
-	int Defence;
-	int Money;
-};
-struct Decoration {
-	int Attack;
-	int HP;
-	int Defence;
-	int Money;
-	int Recovery;
-};
 //伤害公式:造成伤害=攻击者的攻击×(1-护甲/100000+护甲)
 //免伤率=护甲/100000+护甲
 

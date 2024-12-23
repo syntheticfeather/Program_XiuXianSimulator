@@ -18,16 +18,10 @@
     <ClCompile Include="Adventure.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="fuben.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ShoppingMall.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="XiuXian.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="contract.cpp">
@@ -50,6 +44,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MainScreen.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XiuXian.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

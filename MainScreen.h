@@ -8,7 +8,9 @@
 #include<stdbool.h>
 #include<time.h>
 #include<pthread.h>
-
+#include"Shop.h"
+#include"Adven.h"
+#include"XiuXian.h"
 
 struct Button
 {
@@ -39,10 +41,9 @@ struct Player_
 	int Age = 1000;
 	int Coin = 4;
 	char Name[10] = "";
-	struct Weapon* WearingWeapon;//武器槽
-	struct Armor* WearingArmor;//防具槽
-	struct Decoration* WearingDecoration;//饰品槽
-
+	struct Weapon* WearingWeapon = NULL;//武器槽
+	struct Armor* WearingArmor = NULL;//防具槽
+	struct Decoration* WearingDecoration = NULL;//饰品槽
 };
 void GetName(Player_*);
 Button* MakeButton(int x, int y, int w, int h,
@@ -66,9 +67,10 @@ void ShowitemInMall();
 void GoAdventure(IMAGE, Player_*);
 void TuPo(int rate, IMAGE imgBK, Player_*);
 //待完成
-void Save_All(Player_*);
-void Load_All(Player_*);
+void initMall();
+void Save_All(Player_*,Node*);
+void Load_All(Player_*,Node**);
 void Update(Player_*);
-
+void buyItem(Player_* player, int Type);
 
 #endif // !TT

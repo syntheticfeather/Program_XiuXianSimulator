@@ -688,7 +688,7 @@ void Load_All(Player_* Player, Node** HeadNode) {
 		&Player->rate, &Player->Lvl, &Player->CurExp, &Player->MaxExp,
 		&Player->Age, &Player->Coin, &Player->Recovery, &Player->Name);
 	fclose(file);
-	if (Player->IsBeginner = 1)
+	if (Player->IsBeginner == 1)
 	{
 		FILE* file = fopen("Bag.txt", "w");
 		if (file == NULL)

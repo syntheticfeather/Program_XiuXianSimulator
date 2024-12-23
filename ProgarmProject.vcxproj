@@ -135,9 +135,7 @@
     <ClCompile Include="Adventure.cpp" />
     <ClCompile Include="contract.cpp" />
     <ClCompile Include="Final.cpp" />
-    <ClCompile Include="fuben.cpp" />
     <ClCompile Include="ShoppingMall.cpp" />
-    <ClCompile Include="test.cpp" />
     <ClCompile Include="XiuXian.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +145,8 @@
   <ItemGroup>
     <ClInclude Include="Adven.h" />
     <ClInclude Include="MainScreen.h" />
+    <ClInclude Include="Shop.h" />
+    <ClInclude Include="XiuXian.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
