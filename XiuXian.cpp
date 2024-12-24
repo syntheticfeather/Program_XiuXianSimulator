@@ -157,10 +157,11 @@ int Wearing(struct Node* current, struct Player_* Player_1)//穿装备
         {
             Player_1->WearingWeapon = &current->item.weapon;
             Player_1->ATK = Player_1->WearingWeapon->ATK + Player_1->ATK;//使人物属性增加            
+            printf("已有装备");//////
+
         }
         else
         {
-            printf("已有装备");//////
         }
         break;
     case TYPE_ARMOR:
@@ -169,10 +170,11 @@ int Wearing(struct Node* current, struct Player_* Player_1)//穿装备
             Player_1->WearingArmor = &current->item.armor;
             Player_1->DF = Player_1->WearingArmor->DF + Player_1->DF;
             Player_1->HP = Player_1->HP + Player_1->WearingArmor->HP;//使人物属性增加           
+            printf("已有装备");//////
+
         }
         else
         {
-            printf("已有装备");//////
         }
         break;
     case TYPE_DECORATION:
@@ -182,10 +184,11 @@ int Wearing(struct Node* current, struct Player_* Player_1)//穿装备
             Player_1->ATK = Player_1->WearingDecoration->ATK + Player_1->ATK;
             Player_1->DF = Player_1->WearingDecoration->DF + Player_1->DF;
             Player_1->HP = Player_1->WearingDecoration->HP + Player_1->HP;//使人物属性增加            
+            printf("已有装备");//////
+
         }
         else
         {
-            printf("已有装备");//////
         }
         break;
     default:

@@ -217,6 +217,7 @@ void AdventureCase_2(struct Player_* Player) {
 	outtextxy(262 + 250 - textwidth("正是寒风凛冽之时,你为取暖误入地底,却发现火山深处的地火,") / 2, 42 + 100, "正是寒风凛冽之时,你为取暖误入地底,却发现火山深处的地火,");
 	outtextxy(262 + 250 - textwidth("定睛一看,竟是炎帝萧炎的传承!修为增加十分之二,攻击提升.") / 2, 42 + 140, "定睛一看,竟是炎帝萧炎的传承!修为增加十分之二,攻击提升.");
 	Player->CurExp += Player->CurExp * 0.2;
+	Update(Player);
 	Player->ATK += Player->ATK * 0.1;
 	return;
 }
@@ -328,9 +329,9 @@ void AdventureCase_7(struct Player_* Player) {
 	outtextxy(262 + 250 - textwidth("你随你刚结识的道友出游,他带你前往他的宗门.") / 2, 42 + 100, "你随你刚结识的道友出游,他带你前往他的宗门.");
 	outtextxy(262 + 250 - textwidth("在你踏入山门一瞬间,护山大阵开启,那道友卸下易容,竟是一合欢邪修,") / 2, 42 + 140, "在你踏入山门一瞬间,护山大阵开启,那道友卸下易容,竟是一合欢邪修,");
 	outtextxy(262 + 250 - textwidth("你被囚禁数月后趁机逃出,虽略损气血,却发现修为精进.") / 2, 42 + 180, "你被囚禁数月后趁机逃出,虽略损气血,却发现修为精进.");
-
 	Player->CurExp = Player->CurExp * 1.2;
 	Player->HP = Player->HP * 0.95;
+	Update(Player);
 	return;
 }
 
@@ -348,9 +349,9 @@ void AdventureCase_8(struct Player_* Player) {
 	outtextxy(262 + 250 - textwidth("修仙界在天枢域举办百年一届的斗法会,") / 2, 42 + 100, "修仙界在天枢域举办百年一届的斗法会,");
 	outtextxy(262 + 250 - textwidth("你前去参加,遇见幼时的好友薛象策,他现在已经是玄武派龟男之首,") / 2, 42 + 140, "你前去参加,遇见幼时的好友薛象策,他现在已经是玄武派龟男之首,");
 	outtextxy(262 + 250 - textwidth("你们相谈甚欢,交流斗法经验.") / 2, 42 + 180, "你们相谈甚欢,交流斗法经验.");
-
 	Player->CurExp = Player->CurExp * 1.1;
 	Player->DF = Player->DF * 1.05;
+	Update(Player);
 	return;
 }
 
@@ -385,9 +386,9 @@ void AdventureCase_10(struct Player_* Player) {
 	//printf("五迢唔被封印,出现了许多肆无忌惮为非作歹的邪修,你接受任务,立于万万百姓前,横刀向渊,血染天穹.");
 	outtextxy(262 + 250 - textwidth("五迢唔被封印,出现了许多肆无忌惮为非作歹的邪修,") / 2, 42 + 100, "五迢唔被封印,出现了许多肆无忌惮为非作歹的邪修,");
 	outtextxy(262 + 250 - textwidth("你接受任务,立于万万百姓前,横刀向渊,血染天穹.") / 2, 42 + 140, "你接受任务,立于万万百姓前,横刀向渊,血染天穹.");
-
 	Player->CurExp = Player->CurExp * 1.4;
 	Player->Coin = Player->Coin * 1.1 + 100;
+	Update(Player);
 	return;
 }
 

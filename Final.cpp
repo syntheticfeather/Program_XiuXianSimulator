@@ -7,7 +7,7 @@
 
 bool isclicked = false;
 int Page = 0;
-
+int Num;
 char NameList[20][20] = {
 
 	"鲁墨尘","祈墨珏","苗墨北","祈诺昱","湫静安",
@@ -84,14 +84,18 @@ Decoration* DecorationInMall;
 ELIXIR* ELIXIRInMall;
 IMAGE imgBK, imgBag, LvlUpUI;
 
-
+Button* NextButtons[2] = {
+	MakeButton(512 - 50, 600, 50, 40, "上一页", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), false),
+	MakeButton(512, 600, 50, 40, "下一页", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), false),
+};
 
 
 int main()
 {
 	//加载数据
-	Load_All(Player,&HeadNode);
-
+	Load_All(Player, &HeadNode);
+	printf("%d", Num);
+	printf("%d", Player->IsBeginner);
 	//生成随机名字
 	GetName(Player);
 	//创建主窗口
@@ -109,7 +113,7 @@ int main()
 
 	setfillcolor(RGB(0, 0, 0));
 	fillroundrect(200, 765, 824, 785, 20, 10);
-	Node* Test = TurnToNode(HeadNode,1);
+	Node* Test = TurnToNode(HeadNode, 1);
 	//获取鼠标消息
 	//开始
 	BeginBatchDraw();
@@ -139,11 +143,6 @@ int main()
 				CloseButton_Shop->Canclick = false;
 				CloseButton_Bag->Canclick = false;
 			}
-			if (IsClickButton(BagButton, m))
-			{
-				OpenBag(imgBag,HeadNode);
-				CloseButton_Bag->Canclick = true;
-			}
 			//历练
 			if (IsClickButton(Adventure, m))
 			{
@@ -163,7 +162,6 @@ int main()
 				CloseButton_Adven->Canclick = false;
 				ContinueButton->Canclick = false;
 			}
-
 			//商城
 			if (IsClickButton(ShoppingMall, m))
 			{
@@ -188,6 +186,15 @@ int main()
 					}
 				}
 			}
+
+			if (IsClickButton(BagButton, m))
+			{
+				OpenBag(imgBag, HeadNode);
+				CloseButton_Bag->Canclick = true;
+				NextButtons[0]->Canclick = true;
+				NextButtons[1]->Canclick = true;
+
+			}
 			//背包穿戴/使用东西
 			if (CloseButton_Bag->Canclick == true)
 			{
@@ -196,8 +203,25 @@ int main()
 				{
 					if (IsClickButton(BagButtons[i], m))
 					{
-						Node* TarNode = TurnToNode(HeadNode,Page+i);
-						printf("被点击了");
+						Node* TarNode = TurnToNode(HeadNode, Page + i);
+						Wearing(TarNode, Player);
+					}
+				}
+			}
+			if (CloseButton_Bag->Canclick == true)
+			{
+				for (int i = 0; i < 2; i++)
+				{
+					if (IsClickButton(NextButtons[i], m))
+					{
+						if (i == 1 && Page > 0)
+						{
+							Page--;
+						}
+						else if (i == 2 && Num + 4 > Page * 4)
+						{
+							Page++;
+						}
 					}
 				}
 			}
@@ -221,7 +245,7 @@ int main()
 			//退出并保存
 			if (IsClickButton(CloseButton_All, m))
 			{
-				Save_All(Player,HeadNode);
+				Save_All(Player, HeadNode);
 				break;
 			}
 			FlushBatchDraw();
@@ -540,6 +564,10 @@ void OpenBag(IMAGE imgBag, Node* HeadNode) {
 	{
 		DrawButton(BagButtons[i]);
 	}
+	for (int i = 0; i < 2; i++)
+	{
+		DrawButton(NextButtons[i]);
+	}
 	ShowItemInBag(HeadNode);
 }
 
@@ -558,7 +586,7 @@ void ShowItemInBag(Node* HeadNode) {
 			x = 312;
 			y = 230;
 		}
-		else if (i%4 == 1)
+		else if (i % 4 == 1)
 		{
 			x = 562;
 			y = 230;
@@ -576,40 +604,40 @@ void ShowItemInBag(Node* HeadNode) {
 		switch (Cur->Type)
 		{
 		case TYPE_WEAPON:
-			outtextxy(x + 75 -7, y-30, "武器");//中点-7
+			outtextxy(x + 75 - 7, y - 30, "武器");//中点-7
 			char text1[20];
 			sprintf(text1, "%d", (int)Cur->item.weapon.ATK);
 			outtextxy(x + 30, y, "攻击:");
 			outtextxy(x + 30 + textwidth("攻击:"), y, text1);
 			break;
 		case TYPE_ARMOR:
-			outtextxy(x + 68, y-30, "防具");
+			outtextxy(x + 68, y - 30, "防具");
 			char text3[20];
 			sprintf(text3, "%d", (int)Cur->item.armor.HP);
 			outtextxy(x + 30, y, "血量:");
 			outtextxy(x + 30 + textwidth("血量:"), y, text3);
 			char text4[20];
 			sprintf(text4, "%d", (int)Cur->item.armor.DF);
-			outtextxy(x + 30, y+30, "防御:");
-			outtextxy(x + 30 + textwidth("防御:"), y+30, text4);
+			outtextxy(x + 30, y + 30, "防御:");
+			outtextxy(x + 30 + textwidth("防御:"), y + 30, text4);
 			break;
 		case TYPE_DECORATION:
-			outtextxy(x + 68, y-30, "饰品");//中点-7
+			outtextxy(x + 68, y - 30, "饰品");//中点-7
 			char text6[20];
 			sprintf(text6, "%d", (int)Cur->item.decoration.ATK);
 			outtextxy(x + 30, y, "攻击:");
 			outtextxy(x + 30 + textwidth("攻击:"), y, text6);
 			char text7[20];
 			sprintf(text7, "%d", (int)Cur->item.decoration.HP);
-			outtextxy(x + 30, y+30, "血量:");
-			outtextxy(x + 30 + textwidth("血量:"), y+30, text7);
+			outtextxy(x + 30, y + 30, "血量:");
+			outtextxy(x + 30 + textwidth("血量:"), y + 30, text7);
 			char text8[20];
 			sprintf(text8, "%d", (int)Cur->item.decoration.DF);
-			outtextxy(x + 30, y+60, "防御:");
-			outtextxy(x + 30 + textwidth("防御:"), y+60, text8);
+			outtextxy(x + 30, y + 60, "防御:");
+			outtextxy(x + 30 + textwidth("防御:"), y + 60, text8);
 			break;
 		case TYPE_ELIXIR:
-			outtextxy(x + 68, y-30, "丹药");//中点-7
+			outtextxy(x + 68, y - 30, "丹药");//中点-7
 			char text10[20];
 			sprintf(text10, "%d", (int)Cur->item.elixir.rate);
 			outtextxy(x + 30, y, "增加突破概率:");
@@ -644,15 +672,15 @@ void ShowitemInMall() {
 		switch (i)
 		{
 		case TYPE_WEAPON:
-			outtextxy(380,200,"武器");//中点-7
+			outtextxy(380, 200, "武器");//中点-7
 			char text1[20];
 			sprintf(text1, "%d", (int)WeaponInMall->ATK);
-			outtextxy(312 + 30,230,"攻击:");
+			outtextxy(312 + 30, 230, "攻击:");
 			outtextxy(312 + 30 + textwidth("攻击:"), 230, text1);
 			char text2[20];
 			sprintf(text2, "%d", WeaponInMall->Coin);
-			outtextxy(312 + 30,260,"价格:");
-			outtextxy(312 + 30 + textwidth("价格:"), 260, text2);			
+			outtextxy(312 + 30, 260, "价格:");
+			outtextxy(312 + 30 + textwidth("价格:"), 260, text2);
 			break;
 		case TYPE_ARMOR:
 			outtextxy(630, 200, "防具");
@@ -701,6 +729,7 @@ void ShowitemInMall() {
 
 //历练框
 void GoAdventure(IMAGE imgBag, Player_* Player) {
+	putimage(0, 0, &imgBK);
 	int h = imgBag.getheight();//600
 	int w = imgBag.getwidth();//508
 	putimage(512 - (w / 2), 512 - (h / 2) - 170, &imgBag);//34
@@ -722,12 +751,14 @@ void TuPo(int rate, IMAGE imgBK, Player_* Player_1)//突破
 		Player_1->ATK = (Player_1->ATK + 2) * 1.2;//攻击增加
 		Player_1->DF = (Player_1->DF + 2) * 1.2;//防御增加
 		Player_1->rate = Player_1->rate - 1.4;//突破成功率减少
-		Player_1->ExpSpeed = 1 + Player_1->Lvl * 1.3;//经验增长速度增加		
+		Player_1->ExpSpeed = 1 + Player_1->Lvl * 1.3;//经验增长速度增加
+		putimage(0, 0, &imgBK);
 	}
 	else
 	{
 		outtextxy(512, 512, "失败！");
-	}	
+		Update(Player_1);
+	}
 }
 
 
@@ -736,10 +767,23 @@ void TuPo(int rate, IMAGE imgBK, Player_* Player_1)//突破
 // 装备信息
 void Save_All(Player_* Player, Node* HeadNode) {
 	FILE* file = fopen("data.txt", "w");
-	fprintf(file, "%d %f %f %f %d %d %d %d %d %d %d %s",
+	fprintf(file, "%d %f %f %f %d %d %d %d %d %d %d %d %s\n",
 		Player->IsBeginner, Player->HP, Player->ATK, Player->DF,
-		Player->rate, Player->Lvl, Player->CurExp, Player->MaxExp,
+		Player->rate, Player->Lvl, Player->CurExp, Player->MaxExp,Player->ExpSpeed,
 		Player->Age, Player->Coin, Player->Recovery, Player->Name);
+	//if (Player->WearingWeapon != NULL)
+	//{
+	//	fprintf(file, "%f %d\n", Player->WearingWeapon->ATK, Player->WearingWeapon->Coin);
+	//}
+	//if (Player->WearingWeapon != NULL)
+	//{
+	//	fprintf(file, "%f %f %d\n", Player->WearingArmor->HP, Player->WearingArmor->DF, Player->WearingArmor->Coin);
+	//}
+
+	//if (Player->WearingWeapon != NULL)
+	//{
+	//	fprintf(file, "%f %f %f %d", Player->WearingDecoration->ATK, Player->WearingDecoration->HP, Player->WearingDecoration->DF, Player->WearingDecoration->Coin);
+	//}
 	fclose(file);
 	Save_NodeList(HeadNode);
 	//以及装备背包保存
@@ -752,10 +796,16 @@ void Save_All(Player_* Player, Node* HeadNode) {
 //装备信息
 void Load_All(Player_* Player, Node** HeadNode) {
 	FILE* file = fopen("data.txt", "r");
-	fscanf(file, "%d %f %f %f %d %d %d %d %d %d %d %s",
+	fscanf(file, "%d %f %f %f %d %d %d %d %d %d %d %d %s\n",
 		&Player->IsBeginner, &Player->HP, &Player->ATK, &Player->DF,
-		&Player->rate, &Player->Lvl, &Player->CurExp, &Player->MaxExp,
+		&Player->rate, &Player->Lvl, &Player->CurExp, &Player->MaxExp,&Player->ExpSpeed,
 		&Player->Age, &Player->Coin, &Player->Recovery, &Player->Name);
+	//fscanf(file, "%f %d\n",
+	//	&Player->WearingWeapon->ATK, &Player->WearingWeapon->Coin);
+	//fscanf(file, "%f %f %d\n",
+	//	&Player->WearingArmor->HP, &Player->WearingArmor->DF, &Player->WearingArmor->Coin);
+	//fscanf(file, "%f %f %f %d",
+	//	&Player->WearingDecoration->ATK, &Player->WearingDecoration->HP, &Player->WearingDecoration->DF, &Player->WearingDecoration->Coin);
 	fclose(file);
 	if (Player->IsBeginner == 1)
 	{
@@ -767,7 +817,7 @@ void Load_All(Player_* Player, Node** HeadNode) {
 		fprintf(file, "0 %f %d\n", 2.0, 5);
 		fclose(file);
 	}
-	Load_Nodes(HeadNode);
+	Num = Load_Nodes(HeadNode);
 	initMall();
 	//以及装备背包读取
 	/////
@@ -799,7 +849,7 @@ void buyItem(Player_* player, int Type) {
 	{
 	case TYPE_WEAPON:
 		// 检查玩家是否有足够的金币来购买此物品
-		if (player->Coin < WeaponInMall->Coin) {			
+		if (player->Coin < WeaponInMall->Coin) {
 		}
 		else
 		{
@@ -808,7 +858,7 @@ void buyItem(Player_* player, int Type) {
 			Node* TempNode = createNode(TYPE_WEAPON);
 			TempNode->item.weapon = *WeaponInMall;
 			TempNode->Type = TYPE_WEAPON;
-			insertAtHead(&HeadNode, TempNode);			
+			insertAtHead(&HeadNode, TempNode);
 			DrawButton(MallItemButton[Type]);
 			WeaponInMall = CreateWeapon(Player);
 		}
@@ -816,7 +866,7 @@ void buyItem(Player_* player, int Type) {
 	case TYPE_ARMOR:
 		// 检查玩家是否有足够的金币来购买此物品
 		if (player->Coin < ArmorInMall->Coin) {
-			
+
 		}
 		else
 		{
@@ -825,7 +875,7 @@ void buyItem(Player_* player, int Type) {
 			Node* TempNode = createNode(TYPE_ARMOR);
 			TempNode->item.armor = *ArmorInMall;
 			TempNode->Type = TYPE_ARMOR;
-			insertAtHead(&HeadNode, TempNode);			
+			insertAtHead(&HeadNode, TempNode);
 			DrawButton(MallItemButton[Type]);
 			ArmorInMall = CreatArmor(Player);
 		}
@@ -833,7 +883,7 @@ void buyItem(Player_* player, int Type) {
 	case TYPE_DECORATION:
 		// 检查玩家是否有足够的金币来购买此物品
 		if (player->Coin < DecorationInMall->Coin) {
-			
+
 		}
 		else
 		{
@@ -842,7 +892,7 @@ void buyItem(Player_* player, int Type) {
 			Node* TempNode = createNode(TYPE_DECORATION);
 			TempNode->item.decoration = *DecorationInMall;
 			TempNode->Type = TYPE_DECORATION;
-			insertAtHead(&HeadNode, TempNode);			
+			insertAtHead(&HeadNode, TempNode);
 			DrawButton(MallItemButton[Type]);
 			DecorationInMall = CreateDecoration(Player);
 		}
@@ -850,7 +900,7 @@ void buyItem(Player_* player, int Type) {
 	case TYPE_ELIXIR:
 		// 检查玩家是否有足够的金币来购买此物品
 		if (player->Coin < ELIXIRInMall->Coin) {
-			
+
 		}
 		else
 		{
@@ -859,7 +909,7 @@ void buyItem(Player_* player, int Type) {
 			Node* TempNode = createNode(TYPE_ELIXIR);
 			TempNode->item.elixir = *ELIXIRInMall;
 			TempNode->Type = TYPE_ELIXIR;
-			insertAtHead(&HeadNode, TempNode);			
+			insertAtHead(&HeadNode, TempNode);
 			DrawButton(MallItemButton[Type]);
 			ELIXIRInMall = CreateElixir(Player);
 		}
@@ -867,10 +917,10 @@ void buyItem(Player_* player, int Type) {
 	}
 }
 
-Node* TurnToNode(Node * HeadNode, int num)
+Node* TurnToNode(Node* HeadNode, int num)
 {
 	Node* Cur = HeadNode;
-	for (int i = 0; i < num+1; i++)
+	for (int i = 0; i < num + 1; i++)
 	{
 		Cur = Cur->next;
 	}

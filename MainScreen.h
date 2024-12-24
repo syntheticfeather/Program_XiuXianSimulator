@@ -28,9 +28,9 @@ struct Button
 };
 struct Player_
 {
-	bool IsBeginner = false;
-	float HP = 1.0;
-	float ATK = 1.0;
+	int IsBeginner = 0;
+	float HP = 10.0;
+	float ATK = 5.0;
 	float DF = 1.0;
 	int Recovery = 1;//恢复能力(战斗回血)
 	int rate = 80;

@@ -62,6 +62,7 @@ void insertAtHead(Node** L, Node* item)
     }
 }
 
+
 //// ------------------------------------------------------------------------------------------------------------------------------------------------ -
 //// 支付函数：尝试购买商品并从玩家的钱包中扣款
 //void buyItem(Player_* player,int Type) {
@@ -185,15 +186,16 @@ void insertAtHead(Node** L, Node* item)
 //    player->inventory = NULL; // 最后将背包指针置为NULL
 //}
 //
-void Load_Nodes(Node** L)
+int Load_Nodes(Node** L)
 {
     FILE* fp;    
     Node* p, * r, * TempNode;
     *L = (Node*)malloc(sizeof(Node));
     r = *L;
+    int Num = 0;
     if ((fp = fopen("Bag.txt", "r")) == NULL)
     {
-        return;
+        return 0;
     }
     else 
     {
@@ -201,8 +203,10 @@ void Load_Nodes(Node** L)
             TempNode = (Node*)malloc(sizeof(Node));
             if (TempNode == NULL)
             {
-                return;
+                r->next = NULL;
+                return Num;
             }
+            Num++;
             fscanf(fp, "%d ", &TempNode->Type);
             switch (TempNode->Type) {
             case TYPE_WEAPON:
@@ -218,14 +222,15 @@ void Load_Nodes(Node** L)
                 fscanf(fp,"%f %d\n", &TempNode->item.elixir.rate, &TempNode->item.elixir.Coin);
                 break;
             }            
-            p = (Node*)malloc(sizeof(Node));
+            //p = (Node*)malloc(sizeof(Node));
             p = TempNode;
             r->next = p;
             r = p;            
         }
     }
     fclose(fp);
-    r->next = NULL;    
+    r->next = NULL;   
+    return Num;
 }
 
 void Save_NodeList(Node* HeadNode) {

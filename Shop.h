@@ -47,5 +47,5 @@ struct Node {
 void insertAtHead(Node** head, Node* newNode);
 Node* createNode(int Type);
 void Save_NodeList(Node* HeadNode);
-void Load_Nodes(Node** L);
+int Load_Nodes(Node** L);
 #endif // !SHOP_H
