@@ -8,6 +8,7 @@
 bool isclicked = false;
 int Page = 0;
 int Num;
+int Counter=0;
 char NameList[20][20] = {
 
 	"鲁墨尘","祈墨珏","苗墨北","祈诺昱","湫静安",
@@ -34,7 +35,7 @@ const char BeginText[10][100] = {
 	"上一世的你在成仙渡劫时不幸被兄弟老婆背叛，阴差阳错回到了18岁那年。",
 	"重活一世你决定不再颓废，誓要夺回曾经属于你的一切。",
 	"点击画面加快修炼。",
-	"经验值满了点击突破案件进行突破",
+	"经验值满了点击突破按键进行突破",
 	"达到一定修为可以外出历练，探索机遇",
 	"灵石可以在商城中购买装备以及灵丹妙药,或者出售不需要的装备",
 	"在背包界面中可以更换装备.查看已有的丹药",
@@ -44,6 +45,7 @@ const char BeginText[10][100] = {
 
 Player_* Player = (Player_*)malloc(sizeof(Player_));
 Node* HeadNode;
+size_t Timer;
 
 //主点击按钮
 Button* XiuXing = MakeButton(128 - 50, 929, 100, 50, "修炼", RGB(137, 207, 240), RGB(255, 166, 87), RGB(30, 144, 255), true);
@@ -94,10 +96,8 @@ int main()
 {
 	//加载数据
 	Load_All(Player, &HeadNode);
-	printf("%d", Num);
-	printf("%d", Player->IsBeginner);
-	//生成随机名字
 	GetName(Player);
+	//生成随机名字
 	//创建主窗口
 	HWND MainCamera = initgraph(1024, 1024);
 	//加载图片
@@ -116,9 +116,22 @@ int main()
 	Node* Test = TurnToNode(HeadNode, 1);
 	//获取鼠标消息
 	//开始
+	Timer = time(NULL);
 	BeginBatchDraw();
 	while (1)
 	{
+		if (time(NULL) - Timer > 1)
+		{
+			Counter++;
+			Timer = time(NULL);
+			Player->CurExp = Player->CurExp + Player->ExpSpeed;
+			putimage(0, 0, &imgBK);
+			if (Counter > 20)
+			{
+				Player->Age++;
+				Counter == 0;
+			}
+		}
 		flushmessage();
 		DrawButton(XiuXing);
 		DrawButton(BagButton);
@@ -262,7 +275,7 @@ int main()
 
 //初始化姓名
 void GetName(Player_* Player) {
-	if (Player->IsBeginner)
+	if (Player->IsBeginner || Player->Name ==NULL)
 	{
 		srand((unsigned int)time(NULL));
 		strcpy(Player->Name, NameList[rand() % 20]);
@@ -600,6 +613,10 @@ void ShowItemInBag(Node* HeadNode) {
 		{
 			x = 562;
 			y = 430;
+		}
+		if (Cur == NULL)
+		{
+			return;
 		}
 		switch (Cur->Type)
 		{

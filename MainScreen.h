@@ -37,7 +37,7 @@ struct Player_
 	int Lvl = 0;
 	int CurExp = 8;
 	int MaxExp = 10;
-	int ExpSpeed = 0;
+	int ExpSpeed = 1;
 	int Age = 1000;
 	int Coin = 4;
 	char Name[10] = "";
